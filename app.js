@@ -1,5 +1,5 @@
-const ip = "xxxx";      // 面板地址
-const apikey = "xxxx";  // 面板API密钥
+const ip = "www.icelly.xyz";      // 面板地址
+const apikey = "33938b1f639441918c33371f5c7578bd";  // 面板API密钥
 
 const http = require('http');
 
@@ -47,7 +47,11 @@ async function formatOverviewData(rawData) {
         
         // 面板登录信息
         loginFailed: rawData.data.record.loginFailed || 0,
-        logined: rawData.data.record.logined || 0
+        logined: rawData.data.record.logined || 0,
+
+        // 节点详情
+        nodeIp: rawData.data.remote[0].ip || '未知',
+        nodeVersion: rawData.data.remote[0].version || '未知'
     };
 }
 
@@ -127,6 +131,41 @@ async function handleRequest(request) {
             </Grid>
         </local:MyCard>
     </Grid>
+</local:MyCard>
+<local:MyCard Title="节点详情" Margin="0,0,0,15">
+    <local:MyCard Title="主节点" Margin="15,35,15,15">
+        <Grid Margin="15,0,15,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/> <!-- 第一列 -->
+                <ColumnDefinition Width="15"/> <!-- 分隔列（可选） -->
+                <ColumnDefinition Width="*"/> <!-- 第二列 -->
+            </Grid.ColumnDefinitions>
+
+            <local:MyCard Title="节点地址" Grid.Row="1" Grid.Column="0" Margin="0,35,0,0">
+                <Grid>
+                    <TextBlock 
+                        Text="${data.nodeIp}"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        Margin="0,30,0,15"/>
+                </Grid>
+            </local:MyCard>
+
+            <local:MyCard Title="节点版本" Grid.Row="1" Grid.Column="2" Margin="0,35,0,0">
+                <Grid>
+                    <TextBlock 
+                        Text="${data.nodeVersion}"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        Margin="0,30,0,15"/>
+                </Grid>
+            </local:MyCard>
+        </Grid>
+    </local:MyCard>
 </local:MyCard>
 `;
 

@@ -16,12 +16,12 @@
         <local:MyCard Title="实例运行状态" Grid.Row="0" Grid.Column="0" Margin="0,35,0,0">
             <Grid>
                 <TextBlock 
-                    Text="2/2"
+                    Text="${data.runningInstances}/${data.totalInstances}"
                     FontSize="35"
                     FontWeight="Bold"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
-                    Margin="0,30,0,15"/> <!-- 顶部间距，但这里不需要15px的底部间距，因为下面还有卡片 -->
+                    Margin="0,30,0,15"/>
             </Grid>
         </local:MyCard>
 
@@ -29,12 +29,12 @@
         <local:MyCard Title="节点在线数" Grid.Row="0" Grid.Column="2" Margin="0,35,0,0">
             <Grid>
                 <TextBlock 
-                    Text="1/1" 
+                    Text="${data.running}/${data.total}"
                     FontSize="35"
                     FontWeight="Bold"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
-                    Margin="0,30,0,15"/> <!-- 顶部间距，但这里不需要15px的底部间距 -->
+                    Margin="0,30,0,15"/>
             </Grid>
         </local:MyCard>
 
@@ -42,12 +42,12 @@
         <local:MyCard Title="系统资源信息" Grid.Row="1" Grid.Column="0" Margin="0,15,0,0">
             <Grid>
                 <TextBlock 
-                    Text="3% 18%" 
+                    Text="${data.cpuUsage}% ${data.memoryUsage}%"
                     FontSize="35"
                     FontWeight="Bold"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
-                    Margin="0,30,0,15"/> <!-- 顶部间距，底部间距用于与其他元素分隔 -->
+                    Margin="0,30,0,15"/>
             </Grid>
         </local:MyCard>
 
@@ -55,13 +55,15 @@
         <local:MyCard Title="面板登录次数" Grid.Row="1" Grid.Column="2" Margin="0,15,0,0">
             <Grid>
                 <TextBlock 
-                    Text="5:13" 
+                    Text="${data.loginFailed}:${data.logined}"
                     FontSize="35"
                     FontWeight="Bold"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
-                    Margin="0,30,0,15"/> <!-- 顶部间距，底部间距用于与其他元素分隔 -->
+                    Margin="0,30,0,15"/>
             </Grid>
         </local:MyCard>
     </Grid>
+</local:MyCard>
+<local:MyCard Title="节点详情" Margin="0,0,0,15">
 </local:MyCard>

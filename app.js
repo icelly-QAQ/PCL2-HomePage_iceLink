@@ -1,5 +1,5 @@
-const ip = "www.icelly.xyz";      // 面板地址
-const apikey = "33938b1f639441918c33371f5c7578bd";  // 面板API密钥
+const ip = "xxxx";      // 面板地址
+const apikey = "xxxx";  // 面板API密钥
 
 const http = require('http');
 

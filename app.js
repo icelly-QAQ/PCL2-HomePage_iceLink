@@ -1,9 +1,9 @@
-const ip = "www.icelly.xyz";      // 面板地址
-const apikey = "33938b1f639441918c33371f5c7578bd";  // 面板API密钥
+const ip = "xxxxx";      // 面板地址
+const apikey = "xxxxx";  // 面板API密钥
 
 const serverConfig = {
-    serverName: "NyaCat",  // 服务器名称(可留空，留空时显示未知)
-    serverIP: "mc.nyacat.cloud",  // 服务器地址(可留空，留空时不显示mc服务器状态)
+    serverName: "xxxxx",  // 服务器名称(可留空，留空时显示未知)
+    serverIP: "xxxxx",  // 服务器地址(可留空，留空时不显示mc服务器状态)
     serverPORT: ""  // 服务器端口(可留空，默认为25565)
 }
 

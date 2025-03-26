@@ -1,11 +1,58 @@
 const ip = "www.icelly.xyz";      // 面板地址
 const apikey = "33938b1f639441918c33371f5c7578bd";  // 面板API密钥
 
+const serverConfig = {
+    serverName: "NyaCat",  // 服务器名称(可留空，留空时显示未知)
+    serverIP: "mc.nyacat.cloud",  // 服务器地址(可留空，留空时不显示mc服务器状态)
+    serverPORT: ""  // 服务器端口(可留空，默认为25565)
+}
+
 const http = require('http');
+const https = require('https');
 
 async function fetchOverviewData() {
     return new Promise((resolve, reject) => {
         http.get(`http://${ip}/api/overview?apikey=${apikey}`, (res) => {
+            let data = '';
+
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+
+            res.on('end', () => {
+                try {
+                    const jsonData = JSON.parse(data);
+                    console.log('API Response:', JSON.stringify(jsonData, null, 2));
+                    resolve(jsonData);
+                } catch (error) {
+                    reject(error);
+                }
+            });
+        }).on('error', (error) => {
+            reject(error);
+        });
+    });
+}
+
+async function getServerInfo() {
+    if (!serverConfig.serverIP) {
+        return { online: '未配置' };
+    }
+
+    // 构建基础 URL，使用默认端口25565
+    const port = serverConfig.serverPORT || '25565';
+    const apiUrl = `https://api.mcsrvstat.us/3/${serverConfig.serverIP}:${port}`;
+
+    // 添加请求选项，包括 User-Agent
+    const options = {
+        headers: {
+            'User-Agent': 'PCL2-Home/1.0 (https://github.com/icellye/PCL2-home)',
+            'Accept': 'application/json'
+        }
+    };
+
+    return new Promise((resolve, reject) => {
+        https.get(apiUrl, options, (res) => {
             let data = '';
 
             res.on('data', (chunk) => {
@@ -61,12 +108,36 @@ async function handleRequest(request) {
         // 获取并格式化数据
         const rawData = await fetchOverviewData();
         const data = await formatOverviewData(rawData);
-
         
+        let serverInfo_xml = '';  // 初始化为空字符串
+        
+        // 仅当 serverIP 存在时才获取并插入服务器信息
+        if (serverConfig.serverIP) {
+            const serverInfo = await getServerInfo();
+            serverInfo_xml = `
+<local:MyCard Title="MC服务器信息" Margin="0,0,0,15">
+    <TextBlock 
+        Text="${serverConfig.serverName}"
+        FontSize="15"
+        FontWeight="Bold"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Top"
+        Margin="15,30,0,15"/>
+    <TextBlock 
+        Text="${serverInfo.players.online}"
+        FontSize="15"
+        FontWeight="Bold"
+        HorizontalAlignment="Right"
+        VerticalAlignment="Top"
+        Margin="15,30,15,15"/>
+</local:MyCard>`
+        }
         
         // 使用模板字符串构建XML，使用API返回的数据
         const xml = `
 <local:MyHint Text="提示:该主页为0.1.0-Beta版，可能会出现许多BUG" Margin="0,0,0,15" IsWarn="False"/>
+
+${serverInfo_xml}
 
 <local:MyCard Title="仪表盘" Margin="0,0,0,15">
     <Grid Margin="15,0,15,15">
@@ -167,6 +238,8 @@ async function handleRequest(request) {
         </local:MyCard>
     </Grid>
 </local:MyCard>
+
+<local:MyButton Text="刷新" Margin="0,0,0,15" EventType="刷新主页" Height="45"/>
 
 <local:MyHint Text="提示:当存在多个节点时默认显示第一个节点" Margin="0,0,0,15" IsWarn="False"/>
 `;

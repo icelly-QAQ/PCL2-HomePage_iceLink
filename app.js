@@ -1,7 +1,10 @@
 /* 配置项start */
 
-const ip = "xxxxx";      // 面板地址
-const apikey = "xxxxx";  // 面板API密钥
+const ip = "xxxx";      // 面板地址
+const apikey = "xxxx";  // 面板API密钥
+const setToken = "114514";  // 设置管理员令牌
+
+const debug = false;     // 调试开关：true-显示调试信息，false-不显示任何信息
 
 const serverConfig = {
     serverName: "",  // 服务器名称(可留空，留空时显示服务器地址)
@@ -10,6 +13,9 @@ const serverConfig = {
 }
 
 /* 配置项end */
+
+let adminToken = '';  // 管理员令牌
+let noticeContent = '';  // 存储notice命令的内容
 
 const http = require('http');
 const https = require('https');
@@ -26,7 +32,7 @@ async function fetchOverviewData() {
             res.on('end', () => {
                 try {
                     const jsonData = JSON.parse(data);
-                    console.log('API Response:', JSON.stringify(jsonData, null, 2));
+                    debug && console.log('API Response:', JSON.stringify(jsonData, null, 2));
                     resolve(jsonData);
                 } catch (error) {
                     reject(error);
@@ -70,7 +76,7 @@ async function getServerInfo() {
             res.on('end', () => {
                 try {
                     const jsonData = JSON.parse(data);
-                    console.log('API Response:', JSON.stringify(jsonData, null, 2));
+                    debug && console.log('API Response:', JSON.stringify(jsonData, null, 2));
                     resolve(jsonData);
                 } catch (error) {
                     reject(error);
@@ -111,14 +117,30 @@ async function formatOverviewData(rawData) {
     };
 }
 
-async function handleRequest(request) {
+async function serveradmin(request) {
     try {
         // 获取并格式化数据
         const rawData = await fetchOverviewData();
         const data = await formatOverviewData(rawData);
         
-        let serverInfo_xml = '';  // 初始化为空字符串
+        let serverNotice_xml = '';  // 初始化为空字符串
         
+        if (noticeContent) {
+            serverNotice_xml = `
+<local:MyCard Title="服务器公告" Margin="0,0,0,15">
+    <TextBlock 
+        Text="${noticeContent}"
+        FontSize="15"
+        FontWeight="Bold"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Top"
+        Margin="15,30,0,15"/>
+</local:MyCard>
+`
+} else {
+            serverInfo_xml = ``
+        }
+
         // 仅当 serverIP 存在时才获取并插入服务器信息
         if (serverConfig.serverIP) {
             const serverInfo = await getServerInfo();
@@ -162,6 +184,7 @@ async function handleRequest(request) {
         const xml = `
 <local:MyHint Text="提示:该主页为v0.1.2-Beta版，可能会出现许多BUG" Margin="0,0,0,15" IsWarn="False"/>
 
+${serverNotice_xml}
 ${serverInfo_xml}
 
 <local:MyCard Title="仪表盘" Margin="0,0,0,15">
@@ -285,13 +308,121 @@ ${serverInfo_xml}
     }
 }
 
-// 创建HTTP服务器
+async function clientInfo() {
+    try {
+        // 获取并格式化数据
+        const rawData = await fetchOverviewData();
+        const data = await formatOverviewData(rawData);
+        
+        let serverNotice_xml = '';  // 初始化为空字符串
+        
+        if (noticeContent) {
+            serverNotice_xml = `
+<local:MyCard Title="服务器公告" Margin="0,0,0,15">
+    <TextBlock 
+        Text="${noticeContent}"
+        FontSize="15"
+        FontWeight="Bold"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Top"
+        Margin="15,30,0,15"/>
+</local:MyCard>
+`
+} else {
+            serverInfo_xml = ``
+        }
+
+        // 仅当 serverIP 存在时才获取并插入服务器信息
+        if (serverConfig.serverIP) {
+            const serverInfo = await getServerInfo();
+            const protocolName = serverInfo.protocol?.name || '未知版本';
+            const playersOnline = serverInfo.players?.online || 0;
+            const playersMax = serverInfo.players?.max || 0;
+            
+            // 计算玩家数量字符串的长度并添加额外的15px
+            const playerCountString = `${playersOnline}/${playersMax}`;
+            const marginRight = playerCountString.length * 10 + 12; // 假设每个字符约10px宽
+            
+            serverInfo_xml = `
+<local:MyCard Title="MC服务器信息" Margin="0,0,0,15">
+    <TextBlock 
+        Text="${serverConfig.serverName}"
+        FontSize="15"
+        FontWeight="Bold"
+        HorizontalAlignment="Left"
+        VerticalAlignment="Top"
+        Margin="15,30,0,15"/>
+    <local:MyButton Text="加入服务器" Margin="0,30,15,15" EventType="启动游戏" EventData="\\current|${serverConfig.serverIP}" ToolTip="将会以当前版本加入${serverConfig.serverIP}" Height="25" Width="80"/>  
+    <TextBlock 
+        Text="${protocolName}"
+        FontSize="15"
+        FontWeight="Bold"
+        HorizontalAlignment="Right"
+        VerticalAlignment="Top"
+        Margin="0,30,${marginRight},15"/>
+    <TextBlock 
+        Text="${playerCountString}"
+        FontSize="15"
+        FontWeight="Bold"
+        HorizontalAlignment="Right"
+        VerticalAlignment="Top"
+        Margin="0,30,15,15"/>
+</local:MyCard>
+`
+        }
+        
+        // 使用模板字符串构建XML，使用API返回的数据
+        const xml = `
+<local:MyHint Text="提示:该主页为v0.1.2-Beta版，可能会出现许多BUG" Margin="0,0,0,15" IsWarn="False"/>
+
+${serverNotice_xml}
+${serverInfo_xml}
+
+<local:MyButton Text="刷新" Margin="0,0,0,15" EventType="刷新主页" Height="45"/>
+
+<local:MyHint Text="这里是客户端awa" Margin="0,0,0,15" IsWarn="False"/>
+`;
+
+        return new Response(xml, {
+            headers: {
+                'Content-Type': 'text/html',
+                'Cache-Control': 'public, max-age=300',
+            },
+        });
+    } catch (error) {
+        return new Response(`Error: ${error.message}`, {
+            status: 500,
+            headers: {
+                'Content-Type': 'text/plain',
+            },
+        });
+    }
+}
+
+
 const server = http.createServer(async (req, res) => {
     try {
-        const response = await handleRequest(req);
+        const url = new URL(req.url, `http://${req.headers.host}`);
+        const params = new URLSearchParams(url.search);
+        
+        // 检查是否存在admin参数，如果不存在则设为空
+        adminToken = params.has('admin') ? params.get('admin') : '';
+        debug && console.log(`当前管理员令牌为: ${adminToken}`);
+        
+        // 声明 response 变量
+        let response;
+        
+        // 根据令牌选择返回内容
+        if (adminToken === setToken) {
+            response = await serveradmin(req);
+        } else {
+            response = await clientInfo();
+        }
+
         res.writeHead(200, response.headers);
         res.end(await response.text());
     } catch (error) {
+        debug && console.error('服务器错误:', error);
         res.writeHead(500, { 'Content-Type': 'text/plain' });
         res.end('Internal Server Error');
     }
@@ -301,4 +432,32 @@ const server = http.createServer(async (req, res) => {
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
+});
+
+// 监听控制台输入
+const readline = require('readline');
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+rl.on('line', (input) => {
+    const args = input.trim().split(' ');
+    const command = args[0].toLowerCase();
+
+    if (command === 'notice') {
+        noticeContent = args.slice(1).join(' ');
+        console.log(`公告内容已更新为: ${noticeContent}`);
+    }
+
+    if (command === 'exit') {
+        rl.close();
+        process.exit();
+    }
+});
+
+// 处理退出
+process.on('SIGINT', () => {
+    rl.close();
+    process.exit();
 });

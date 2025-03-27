@@ -1,7 +1,7 @@
 /* 配置项start */
 
-const ip = "xxxx";      // 面板地址
-const apikey = "xxxx";  // 面板API密钥
+const ip = "xxxxx";      // 面板地址
+const apikey = "xxxxx";  // 面板API密钥
 
 const serverConfig = {
     serverName: "",  // 服务器名称(可留空，留空时显示服务器地址)
@@ -122,6 +122,14 @@ async function handleRequest(request) {
         // 仅当 serverIP 存在时才获取并插入服务器信息
         if (serverConfig.serverIP) {
             const serverInfo = await getServerInfo();
+            const protocolName = serverInfo.protocol?.name || '未知版本';
+            const playersOnline = serverInfo.players?.online || 0;
+            const playersMax = serverInfo.players?.max || 0;
+            
+            // 计算玩家数量字符串的长度并添加额外的15px
+            const playerCountString = `${playersOnline}/${playersMax}`;
+            const marginRight = playerCountString.length * 10 + 12; // 假设每个字符约10px宽
+            
             serverInfo_xml = `
 <local:MyCard Title="MC服务器信息" Margin="0,0,0,15">
     <TextBlock 
@@ -131,16 +139,16 @@ async function handleRequest(request) {
         HorizontalAlignment="Left"
         VerticalAlignment="Top"
         Margin="15,30,0,15"/>
-    <local:MyButton Text="加入服务器" Margin="0,30,15,15" EventType="启动游戏" EventData="\\current|${serverConfig.serverIP}" ToolTip="将会以当前版本加入${serverConfig.serverIP}" Height="25" Width="80"/>
+    <local:MyButton Text="加入服务器" Margin="0,30,15,15" EventType="启动游戏" EventData="\\current|${serverConfig.serverIP}" ToolTip="将会以当前版本加入${serverConfig.serverIP}" Height="25" Width="80"/>  
     <TextBlock 
-        Text="${serverInfo.protocol.name}"
+        Text="${protocolName}"
         FontSize="15"
         FontWeight="Bold"
         HorizontalAlignment="Right"
         VerticalAlignment="Top"
-        Margin="0,30,85,15"/>
+        Margin="0,30,${marginRight},15"/>
     <TextBlock 
-        Text="${serverInfo.players.online}/${serverInfo.players.max}"
+        Text="${playerCountString}"
         FontSize="15"
         FontWeight="Bold"
         HorizontalAlignment="Right"
@@ -152,7 +160,7 @@ async function handleRequest(request) {
         
         // 使用模板字符串构建XML，使用API返回的数据
         const xml = `
-<local:MyHint Text="提示:该主页为0.1.0-Beta版，可能会出现许多BUG" Margin="0,0,0,15" IsWarn="False"/>
+<local:MyHint Text="提示:该主页为v0.1.2-Beta版，可能会出现许多BUG" Margin="0,0,0,15" IsWarn="False"/>
 
 ${serverInfo_xml}
 

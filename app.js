@@ -152,7 +152,7 @@ async function handleRequest(request) {
         
         // 使用模板字符串构建XML，使用API返回的数据
         const xml = `
-<local:MyHint Text="提示:该主页为0.1.0-Beta版，可能会出现许多BUG" Margin="0,0,0,15" IsWarn="False"/>
+<local:MyHint Text="提示:该主页为0.1.2-Beta版，可能会出现许多BUG" Margin="0,0,0,15" IsWarn="False"/>
 
 ${serverInfo_xml}
 

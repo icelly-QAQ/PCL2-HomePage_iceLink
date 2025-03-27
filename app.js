@@ -1,11 +1,15 @@
-const ip = "www.icelly.xyz";      // 面板地址
-const apikey = "33938b1f639441918c33371f5c7578bd";  // 面板API密钥
+/* 配置项start */
+
+const ip = "xxxxx";      // 面板地址
+const apikey = "xxxxx";  // 面板API密钥
 
 const serverConfig = {
-    serverName: "NyaCat",  // 服务器名称(可留空，留空时显示未知)
-    serverIP: "mc.nyacat.cloud",  // 服务器地址(可留空，留空时不显示mc服务器状态)
+    serverName: "",  // 服务器名称(可留空，留空时显示服务器地址)
+    serverIP: "xxxxx",  // 服务器地址(可留空，留空时不显示mc服务器状态)
     serverPORT: ""  // 服务器端口(可留空，默认为25565)
 }
+
+/* 配置项end */
 
 const http = require('http');
 const https = require('https');
@@ -35,6 +39,10 @@ async function fetchOverviewData() {
 }
 
 async function getServerInfo() {
+    if (!serverConfig.serverName) {
+        serverConfig.serverName = serverConfig.serverIP;
+    }
+
     if (!serverConfig.serverIP) {
         return { online: '未配置' };
     }
@@ -123,8 +131,9 @@ async function handleRequest(request) {
         HorizontalAlignment="Left"
         VerticalAlignment="Top"
         Margin="15,30,0,15"/>
+    <local:MyButton Text="加入服务器" Margin="0,30,15,15" EventType="启动游戏" EventData="\current|${serverConfig.serverIP}" ToolTip="推荐以${serverInfo.protocol.name}加入${serverConfig.serverIP}" Height="25" Width="80"/>
     <TextBlock 
-        Text="${serverInfo.players.online}"
+        Text="${serverInfo.players.online}/${serverInfo.players.max}"
         FontSize="15"
         FontWeight="Bold"
         HorizontalAlignment="Right"
@@ -239,9 +248,9 @@ ${serverInfo_xml}
     </Grid>
 </local:MyCard>
 
-<local:MyButton Text="刷新" Margin="0,0,0,15" EventType="刷新主页" Height="45"/>
-
 <local:MyHint Text="提示:当存在多个节点时默认显示第一个节点" Margin="0,0,0,15" IsWarn="False"/>
+
+<local:MyButton Text="刷新" Margin="0,0,0,15" EventType="刷新主页" Height="45"/>
 `;
 
         return new Response(xml, {

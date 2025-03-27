@@ -8,6 +8,7 @@
         HorizontalAlignment="Center"
         VerticalAlignment="Top"
         Margin="0,25,0,15"/>
+    <local:MyButton Text="加入服务器" Margin="0,0,15,15" EventType="加入服务器|${serverConfig.serverIP}" Height="45" Width=""/>
 </local:MyCard>
 
 <local:MyCard Title="仪表盘" Margin="0,0,0,15">

@@ -2,7 +2,7 @@
 
 ***该项目为PCL2的主页预设***
 #### 预览图
-![预览图](./assets/114514.png)
+![预览图](./assets/new.png)
 ------
 
 ### 环境需求
@@ -15,6 +15,12 @@
 const ip = "xxxxx";      修改为你面板的地址
 const apikey ="xxxxx";   修改为你的apikey
 （获取apikey的方法https://docs.mcsmanager.com/zh_cn/apis/get_apikey.html）
+
+const serverConfig = {
+    serverName: "",  // 服务器名称(可留空，留空时显示服务器地址)
+    serverIP: "",    // 服务器地址(可留空，留空时不显示mc服务器状态)
+    serverPORT: ""   // 服务器端口(可留空，默认为25565)
+}
 ```
 3. 运行
 ```
@@ -23,6 +29,8 @@ node app.js
 set PORT=xxxx node app.js （xxxx为你要指定的端口）
 ```
 ----
+**快捷加入服务器启动的是当前选择的版本** ***（本来是想做成启动对应版本的，但是没法通配指定版本。比如你想玩1.21.1的生电服你肯定是要启动带有辅助mod的版本，而我没办法帮你选择带有辅助模组的版本，只能帮你启动1.21.1原版。所以这个功能被我砍掉了，但是服务器信息卡片上会显示服务器版本）***
+
 ### 声明
 该项目遵守 CC BY-NC-SA 4.0 协议
 

@@ -1,11 +1,11 @@
 /* 配置项start */
 
-const ip = "xxxxx";      // 面板地址
-const apikey = "xxxxx";  // 面板API密钥
+const ip = "xxxx";      // 面板地址
+const apikey = "xxxx";  // 面板API密钥
 
 const serverConfig = {
     serverName: "",  // 服务器名称(可留空，留空时显示服务器地址)
-    serverIP: "xxxxx",  // 服务器地址(可留空，留空时不显示mc服务器状态)
+    serverIP: "",  // 服务器地址(可留空，留空时不显示mc服务器状态)
     serverPORT: ""  // 服务器端口(可留空，默认为25565)
 }
 
@@ -131,15 +131,23 @@ async function handleRequest(request) {
         HorizontalAlignment="Left"
         VerticalAlignment="Top"
         Margin="15,30,0,15"/>
-    <local:MyButton Text="加入服务器" Margin="0,30,15,15" EventType="启动游戏" EventData="\current|${serverConfig.serverIP}" ToolTip="推荐以${serverInfo.protocol.name}加入${serverConfig.serverIP}" Height="25" Width="80"/>
+    <local:MyButton Text="加入服务器" Margin="0,30,15,15" EventType="启动游戏" EventData="\\current|${serverConfig.serverIP}" ToolTip="将会以当前版本加入${serverConfig.serverIP}" Height="25" Width="80"/>
+    <TextBlock 
+        Text="${serverInfo.protocol.name}"
+        FontSize="15"
+        FontWeight="Bold"
+        HorizontalAlignment="Right"
+        VerticalAlignment="Top"
+        Margin="0,30,85,15"/>
     <TextBlock 
         Text="${serverInfo.players.online}/${serverInfo.players.max}"
         FontSize="15"
         FontWeight="Bold"
         HorizontalAlignment="Right"
         VerticalAlignment="Top"
-        Margin="15,30,15,15"/>
-</local:MyCard>`
+        Margin="0,30,15,15"/>
+</local:MyCard>
+`
         }
         
         // 使用模板字符串构建XML，使用API返回的数据

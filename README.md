@@ -41,7 +41,7 @@ set PORT=xxxx node app.js （xxxx为你要指定的端口）
 ```
 notice <公告>     用于设置公告
 
-exit       还用说吗，当然是退出啦
+exit    不用我多说吧，当然是退出啦
 ```
 
 #### 如何区分管理端和客户端：

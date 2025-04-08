@@ -170,11 +170,11 @@ async function serveradmin(request) {
 </local:MyCard>
 `
 } else {
-    serverNotice_xml = ``  // 修改这里：将 serverInfo_xml 改为 serverNotice_xml
+    serverNotice_xml = ``
 }
 
 // 初始化服务器信息变量
-let serverInfo_xml = '';  // 添加这一行：在条件判断前初始化 serverInfo_xml
+let serverInfo_xml = '';
 
         // 仅当 serverIP 存在时才获取并插入服务器信息
         if (serverConfig.serverIP) {
@@ -185,39 +185,58 @@ let serverInfo_xml = '';  // 添加这一行：在条件判断前初始化 serve
             
             // 计算玩家数量字符串的长度并添加额外的15px
             const playerCountString = `${playersOnline}/${playersMax}`;
-            const marginRight = playerCountString.length * 10 + 12; // 假设每个字符约10px宽
+            const marginRight = playerCountString.length * 10 + 28; // 假设每个字符约10px宽
             
             serverInfo_xml = `
 <local:MyCard Title="MC服务器信息" Margin="0,0,0,15">
-    <TextBlock 
-        Text="${serverConfig.serverName}"
-        FontSize="15"
-        FontWeight="Bold"
-        HorizontalAlignment="Left"
-        VerticalAlignment="Top"
-        Margin="15,30,0,15"/>
-    <local:MyButton Text="加入服务器" Margin="0,30,15,15" EventType="启动游戏" EventData="\\current|${serverConfig.serverIP}" ToolTip="将会以当前版本加入${serverConfig.serverIP}" Height="25" Width="80"/>  
-    <TextBlock 
-        Text="${protocolName}"
-        FontSize="15"
-        FontWeight="Bold"
-        HorizontalAlignment="Right"
-        VerticalAlignment="Top"
-        Margin="0,30,${marginRight},15"/>
-    <TextBlock 
-        Text="${playerCountString}"
-        FontSize="15"
-        FontWeight="Bold"
-        HorizontalAlignment="Right"
-        VerticalAlignment="Top"
-        Margin="0,30,15,15"/>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel Grid.Column="0">
+            <TextBlock 
+                Text="${serverConfig.serverName}"
+                FontSize="18"
+                FontWeight="Bold"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="15,30,0,15"/>  
+            <TextBlock 
+                Text="服务器版本：${protocolName}"
+                FontSize="18"
+                FontWeight="Bold"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="15,0,${marginRight},15"/>
+            <TextBlock 
+                Text="在线玩家：${playerCountString}"
+                FontSize="18"
+                FontWeight="Bold"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="15,0,15,15"/>
+        </StackPanel>
+        
+        <local:MyButton 
+            Grid.Column="1"
+            Text="加入服务器" 
+            Margin="0,0,15,0" 
+            EventType="启动游戏" 
+            EventData="\\current|${serverConfig.serverIP}" 
+            ToolTip="将会以当前版本加入${serverConfig.serverIP}" 
+            Height="35" 
+            Width="80"
+            VerticalAlignment="Center"/>
+    </Grid>
 </local:MyCard>
 `
         }
         
         // 使用模板字符串构建XML，使用API返回的数据
         const xml = `
-<local:MyHint Text="提示:该主页为v0.1.4-Beta版，可能会出现许多BUG。另外，欢迎使用蓝冰主页！" Margin="0,0,0,15" IsWarn="False"/>
+<local:MyHint Text="提示:该主页为v0.1.4-Beta版，可能会出现许多BUG。另外，欢迎使用iceLink！" Margin="0,0,0,15" IsWarn="False"/>
 
 ${serverNotice_xml}
 ${serverInfo_xml}
@@ -341,6 +360,12 @@ ${serverInfo_xml}
 <local:MyHint Text="提示:当存在多个节点时默认显示第一个节点" Margin="0,0,0,15" IsWarn="False"/>
 
 <local:MyButton Text="刷新" Margin="0,0,0,15" EventType="刷新主页" Height="45"/>
+
+<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
+    <local:MyTextButton Text="iceLink" EventType="打开网页" EventData="https://github.com/icelly-QAQ/PCL2-HomePage_iceLink" FontSize="12" Foreground="#666666"/>
+    <TextBlock Text=" By " Foreground="#666666" FontSize="12"/>
+    <local:MyTextButton Text="icelly_QAQ" EventType="打开网页" EventData="https://github.com/icelly-QAQ" FontSize="12" Foreground="#666666"/>
+</StackPanel>
 `;
 
         return new Response(xml, {
@@ -401,42 +426,65 @@ let serverInfo_xml = '';  // 添加这一行：在条件判断前初始化 serve
             
             serverInfo_xml = `
 <local:MyCard Title="MC服务器信息" Margin="0,0,0,15">
-    <TextBlock 
-        Text="${serverConfig.serverName}"
-        FontSize="15"
-        FontWeight="Bold"
-        HorizontalAlignment="Left"
-        VerticalAlignment="Top"
-        Margin="15,30,0,15"/>
-    <local:MyButton Text="加入服务器" Margin="0,30,15,15" EventType="启动游戏" EventData="\\current|${serverConfig.serverIP}" ToolTip="将会以当前版本加入${serverConfig.serverIP}" Height="25" Width="80"/>  
-    <TextBlock 
-        Text="${protocolName}"
-        FontSize="15"
-        FontWeight="Bold"
-        HorizontalAlignment="Right"
-        VerticalAlignment="Top"
-        Margin="0,30,${marginRight},15"/>
-    <TextBlock 
-        Text="${playerCountString}"
-        FontSize="15"
-        FontWeight="Bold"
-        HorizontalAlignment="Right"
-        VerticalAlignment="Top"
-        Margin="0,30,15,15"/>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel Grid.Column="0">
+            <TextBlock 
+                Text="${serverConfig.serverName}"
+                FontSize="17"
+                FontWeight="Bold"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="15,30,0,15"/>  
+            <TextBlock 
+                Text="服务器版本：${protocolName}"
+                FontSize="17"
+                FontWeight="Bold"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="15,0,${marginRight},15"/>
+            <TextBlock 
+                Text="在线玩家：${playerCountString}"
+                FontSize="17"
+                FontWeight="Bold"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Margin="15,0,15,15"/>
+        </StackPanel>
+        
+        <local:MyButton 
+            Grid.Column="1"
+            Text="加入服务器" 
+            Margin="0,0,15,0" 
+            EventType="启动游戏" 
+            EventData="\\current|${serverConfig.serverIP}" 
+            ToolTip="将会以当前版本加入${serverConfig.serverIP}" 
+            Height="35" 
+            Width="80"
+            VerticalAlignment="Center"/>
+    </Grid>
 </local:MyCard>
 `
         }
         
         // 使用模板字符串构建XML，使用API返回的数据
         const xml = `
-<local:MyHint Text="提示:该主页为v0.1.2-Beta版，可能会出现许多BUG。另外，欢迎使用蓝冰主页！" Margin="0,0,0,15" IsWarn="False"/>
+<local:MyHint Text="提示:该主页为v0.1.4-Beta版，可能会出现许多BUG。另外，欢迎使用蓝冰主页！" Margin="0,0,0,15" IsWarn="False"/>
 
 ${serverNotice_xml}
 ${serverInfo_xml}
 
 <local:MyButton Text="刷新" Margin="0,0,0,15" EventType="刷新主页" Height="45"/>
 
-<local:MyHint Text="这里是客户端awa" Margin="0,0,0,15" IsWarn="False"/>
+<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
+    <local:MyTextButton Text="iceLink" EventType="打开网页" EventData="https://github.com/icelly-QAQ/PCL2-HomePage_iceLink" FontSize="12" Foreground="#666666"/>
+    <TextBlock Text=" By " Foreground="#666666" FontSize="12"/>
+    <local:MyTextButton Text="icelly_QAQ" EventType="打开网页" EventData="https://github.com/icelly-QAQ" FontSize="12" Foreground="#666666"/>
+</StackPanel>
 `;
 
         return new Response(xml, {
@@ -487,7 +535,7 @@ const server = http.createServer(async (req, res) => {
 // 监听端口3000
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`服务正在[ ${PORT} ]端口运行`);
 });
 
 // 监听控制台输入

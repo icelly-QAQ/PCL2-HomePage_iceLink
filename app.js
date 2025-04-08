@@ -1,21 +1,51 @@
-/* 配置项start */
+const fs = require('fs');
+const path = require('path');
 
-const ip = "xxxx";      // 面板地址
-const apikey = "xxxx";  // 面板API密钥
-const setToken = "114514";  // 设置管理员令牌
+// 默认配置
+const defaultConfig = {
+    ip: "xxxx",      // 面板地址
+    apikey: "xxxx",  // 面板API密钥
+    setToken: "xxxx",  // 设置管理员令牌
+    debug: false,     // 调试开关：true-显示调试信息，false-不显示任何信息
+    serverConfig: {
+        serverName: "",  // 服务器名称(可留空，留空时显示服务器地址)
+        serverIP: "",  // 服务器地址(可留空，留空时不显示mc服务器状态)
+        serverPORT: ""  // 服务器端口(可留空，默认为25565)
+    }
+};
 
-const debug = false;     // 调试开关：true-显示调试信息，false-不显示任何信息
+// 配置文件路径
+const configPath = path.join(__dirname, 'config.json');
 
-const serverConfig = {
-    serverName: "",  // 服务器名称(可留空，留空时显示服务器地址)
-    serverIP: "",  // 服务器地址(可留空，留空时不显示mc服务器状态)
-    serverPORT: ""  // 服务器端口(可留空，默认为25565)
+// 读取或创建配置文件
+let config;
+try {
+    if (fs.existsSync(configPath)) {
+        // 如果配置文件存在，读取配置
+        const configFile = fs.readFileSync(configPath, 'utf8');
+        config = JSON.parse(configFile);
+        console.log('已读取配置文件');
+    } else {
+        // 如果配置文件不存在，创建默认配置文件
+        fs.writeFileSync(configPath, JSON.stringify(defaultConfig, null, 4), 'utf8');
+        config = defaultConfig;
+        console.log('已创建默认配置文件，请修改 config.json 中的配置后重启程序');
+        process.exit(1);
+    }
+} catch (error) {
+    console.error('配置文件操作失败:', error);
+    process.exit(1);
 }
 
-/* 配置项end */
+// 使用配置
+const ip = config.ip;
+const apikey = config.apikey;
+const setToken = config.setToken;
+const debug = config.debug;
+const serverConfig = config.serverConfig;
 
 let adminToken = '';  // 管理员令牌
-let noticeContent = '';  // 存储notice命令的内容
+let noticeContent = config.noticeContent || '';  // 从配置文件中读取公告内容
 
 const http = require('http');
 const https = require('https');
@@ -134,12 +164,17 @@ async function serveradmin(request) {
         FontWeight="Bold"
         HorizontalAlignment="Left"
         VerticalAlignment="Top"
-        Margin="15,30,0,15"/>
+        Margin="15,30,15,15"
+        TextWrapping="Wrap"
+        MaxWidth="770"/>
 </local:MyCard>
 `
 } else {
-            serverInfo_xml = ``
-        }
+    serverNotice_xml = ``  // 修改这里：将 serverInfo_xml 改为 serverNotice_xml
+}
+
+// 初始化服务器信息变量
+let serverInfo_xml = '';  // 添加这一行：在条件判断前初始化 serverInfo_xml
 
         // 仅当 serverIP 存在时才获取并插入服务器信息
         if (serverConfig.serverIP) {
@@ -182,7 +217,7 @@ async function serveradmin(request) {
         
         // 使用模板字符串构建XML，使用API返回的数据
         const xml = `
-<local:MyHint Text="提示:该主页为v0.1.2-Beta版，可能会出现许多BUG" Margin="0,0,0,15" IsWarn="False"/>
+<local:MyHint Text="提示:该主页为v0.1.4-Beta版，可能会出现许多BUG。另外，欢迎使用蓝冰主页！" Margin="0,0,0,15" IsWarn="False"/>
 
 ${serverNotice_xml}
 ${serverInfo_xml}
@@ -199,66 +234,82 @@ ${serverInfo_xml}
             <ColumnDefinition Width="*"/> <!-- 第二列 -->
         </Grid.ColumnDefinitions>
 
-        <!-- 左上卡片 -->
-        <local:MyCard Title="实例运行状态" Grid.Row="0" Grid.Column="0" Margin="0,35,0,0">
-            <Grid>
+        <!-- 左上区块 -->
+        <Border Grid.Row="0" Grid.Column="0" Margin="0,35,0,0" BorderThickness="1" BorderBrush="#44000000" CornerRadius="5">
+            <StackPanel>
+                <TextBlock Text="实例运行状态" 
+                         FontSize="16" 
+                         Margin="15,15,15,0"
+                         FontWeight="Bold"/>
                 <TextBlock 
                     Text="${data.runningInstances}/${data.totalInstances}"
                     FontSize="35"
                     FontWeight="Bold"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
-                    Margin="0,30,0,15"/>
-            </Grid>
-        </local:MyCard>
+                    Margin="0,15,0,15"/>
+            </StackPanel>
+        </Border>
 
-        <!-- 右上卡片 -->
-        <local:MyCard Title="节点在线数" Grid.Row="0" Grid.Column="2" Margin="0,35,0,0">
-            <Grid>
+        <!-- 右上区块 -->
+        <Border Grid.Row="0" Grid.Column="2" Margin="0,35,0,0" BorderThickness="1" BorderBrush="#44000000" CornerRadius="5">
+            <StackPanel>
+                <TextBlock Text="节点在线数" 
+                         FontSize="16" 
+                         Margin="15,15,15,0"
+                         FontWeight="Bold"/>
                 <TextBlock 
                     Text="${data.running}/${data.total}"
                     FontSize="35"
                     FontWeight="Bold"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
-                    Margin="0,30,0,15"/>
-            </Grid>
-        </local:MyCard>
+                    Margin="0,15,0,15"/>
+            </StackPanel>
+        </Border>
 
-        <!-- 左下卡片 -->
-        <local:MyCard Title="系统资源信息" Grid.Row="1" Grid.Column="0" Margin="0,15,0,0">
-            <Grid>
+        <!-- 左下区块 -->
+        <Border Grid.Row="1" Grid.Column="0" Margin="0,15,0,0" BorderThickness="1" BorderBrush="#44000000" CornerRadius="5">
+            <StackPanel>
+                <TextBlock Text="系统资源信息" 
+                         FontSize="16" 
+                         Margin="15,15,15,0"
+                         FontWeight="Bold"/>
                 <TextBlock 
                     Text="${data.cpuUsage}% ${data.memoryUsage}%"
                     FontSize="35"
                     FontWeight="Bold"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
-                    Margin="0,30,0,15"/>
-            </Grid>
-        </local:MyCard>
+                    Margin="0,15,0,15"/>
+            </StackPanel>
+        </Border>
 
-        <!-- 右下卡片 -->
-        <local:MyCard Title="面板登录次数" Grid.Row="1" Grid.Column="2" Margin="0,15,0,0">
-            <Grid>
+        <!-- 右下区块 -->
+        <Border Grid.Row="1" Grid.Column="2" Margin="0,15,0,0" BorderThickness="1" BorderBrush="#44000000" CornerRadius="5">
+            <StackPanel>
+                <TextBlock Text="面板登录次数" 
+                         FontSize="16" 
+                         Margin="15,15,15,0"
+                         FontWeight="Bold"/>
                 <TextBlock 
                     Text="${data.loginFailed}:${data.logined}"
                     FontSize="35"
                     FontWeight="Bold"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
-                    Margin="0,30,0,15"/>
-            </Grid>
-        </local:MyCard>
+                    Margin="0,15,0,15"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </local:MyCard>
 
 <local:MyCard Title="${data.nodeName}" Margin="0,0,0,15">
     <Grid Margin="15,0,15,15">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/> <!-- 第一列 -->
-            <ColumnDefinition Width="15"/> <!-- 分隔列（可选） -->
-            <ColumnDefinition Width="*"/> <!-- 第二列 -->
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="15"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <local:MyCard Title="节点地址" Grid.Row="1" Grid.Column="0" Margin="0,35,0,0" Background="Transparent">
@@ -325,12 +376,17 @@ async function clientInfo() {
         FontWeight="Bold"
         HorizontalAlignment="Left"
         VerticalAlignment="Top"
-        Margin="15,30,0,15"/>
+        Margin="15,30,15,15"
+        TextWrapping="Wrap"
+        MaxWidth="770"/>
 </local:MyCard>
 `
 } else {
-            serverInfo_xml = ``
-        }
+    serverNotice_xml = ``  // 修改这里：将 serverInfo_xml 改为 serverNotice_xml
+}
+
+// 初始化服务器信息变量
+let serverInfo_xml = '';  // 添加这一行：在条件判断前初始化 serverInfo_xml
 
         // 仅当 serverIP 存在时才获取并插入服务器信息
         if (serverConfig.serverIP) {
@@ -373,7 +429,7 @@ async function clientInfo() {
         
         // 使用模板字符串构建XML，使用API返回的数据
         const xml = `
-<local:MyHint Text="提示:该主页为v0.1.2-Beta版，可能会出现许多BUG" Margin="0,0,0,15" IsWarn="False"/>
+<local:MyHint Text="提示:该主页为v0.1.2-Beta版，可能会出现许多BUG。另外，欢迎使用蓝冰主页！" Margin="0,0,0,15" IsWarn="False"/>
 
 ${serverNotice_xml}
 ${serverInfo_xml}
@@ -407,7 +463,7 @@ const server = http.createServer(async (req, res) => {
         
         // 检查是否存在admin参数，如果不存在则设为空
         adminToken = params.has('admin') ? params.get('admin') : '';
-        debug && console.log(`当前管理员令牌为: ${adminToken}`);
+        debug && console.log(`传入的管理员令牌: ${adminToken}`);
         
         // 声明 response 变量
         let response;
@@ -447,7 +503,14 @@ rl.on('line', (input) => {
 
     if (command === 'notice') {
         noticeContent = args.slice(1).join(' ');
-        console.log(`公告内容已更新为: ${noticeContent}`);
+        // 更新配置文件中的公告内容
+        config.noticeContent = noticeContent;
+        try {
+            fs.writeFileSync(configPath, JSON.stringify(config, null, 4), 'utf8');
+            console.log(`公告内容已更新为: ${noticeContent}`);
+        } catch (error) {
+            console.error('更新配置文件失败:', error);
+        }
     }
 
     if (command === 'exit') {

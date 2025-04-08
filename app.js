@@ -202,33 +202,41 @@ let serverInfo_xml = '';
                 FontWeight="Bold"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Margin="15,30,0,15"/>  
+                Margin="18,30,0,15"/>  
             <TextBlock 
                 Text="服务器版本：${protocolName}"
                 FontSize="18"
                 FontWeight="Bold"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Margin="15,0,${marginRight},15"/>
+                Margin="18,0,${marginRight},15"/>
             <TextBlock 
                 Text="在线玩家：${playerCountString}"
                 FontSize="18"
                 FontWeight="Bold"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Margin="15,0,15,15"/>
+                Margin="18,0,15,15"/>
         </StackPanel>
         
-        <local:MyButton 
-            Grid.Column="1"
-            Text="加入服务器" 
-            Margin="0,0,15,0" 
-            EventType="启动游戏" 
-            EventData="\\current|${serverConfig.serverIP}" 
-            ToolTip="将会以当前版本加入${serverConfig.serverIP}" 
-            Height="35" 
-            Width="80"
-            VerticalAlignment="Center"/>
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,22,15,0">
+            <local:MyButton 
+                Text="加入服务器" 
+                Margin="0,0,15,8" 
+                EventType="启动游戏" 
+                EventData="\\current|${serverConfig.serverIP}" 
+                ToolTip="将会以当前版本加入${serverConfig.serverIP}" 
+                Height="35" 
+                Width="80"/>
+            <local:MyButton 
+                Text="复制地址" 
+                Margin="0,8,15,0" 
+                EventType="复制文本" 
+                EventData="${serverConfig.serverIP}" 
+                ToolTip="复制服务器地址" 
+                Height="35" 
+                Width="80"/>
+        </StackPanel>
     </Grid>
 </local:MyCard>
 `
@@ -257,12 +265,12 @@ ${serverInfo_xml}
         <Border Grid.Row="0" Grid.Column="0" Margin="0,35,0,0" BorderThickness="1" BorderBrush="#44000000" CornerRadius="5">
             <StackPanel>
                 <TextBlock Text="实例运行状态" 
-                         FontSize="16" 
-                         Margin="15,15,15,0"
-                         FontWeight="Bold"/>
+                    FontSize="16" 
+                    Margin="15,15,15,0"
+                    FontWeight="Bold"/>
                 <TextBlock 
                     Text="${data.runningInstances}/${data.totalInstances}"
-                    FontSize="35"
+                    FontSize="30"
                     FontWeight="Bold"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
@@ -274,12 +282,12 @@ ${serverInfo_xml}
         <Border Grid.Row="0" Grid.Column="2" Margin="0,35,0,0" BorderThickness="1" BorderBrush="#44000000" CornerRadius="5">
             <StackPanel>
                 <TextBlock Text="节点在线数" 
-                         FontSize="16" 
-                         Margin="15,15,15,0"
-                         FontWeight="Bold"/>
+                    FontSize="16" 
+                    Margin="15,15,15,0"
+                    FontWeight="Bold"/>
                 <TextBlock 
                     Text="${data.running}/${data.total}"
-                    FontSize="35"
+                    FontSize="30"
                     FontWeight="Bold"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
@@ -291,12 +299,12 @@ ${serverInfo_xml}
         <Border Grid.Row="1" Grid.Column="0" Margin="0,15,0,0" BorderThickness="1" BorderBrush="#44000000" CornerRadius="5">
             <StackPanel>
                 <TextBlock Text="系统资源信息" 
-                         FontSize="16" 
-                         Margin="15,15,15,0"
-                         FontWeight="Bold"/>
+                    FontSize="16" 
+                    Margin="15,15,15,0"
+                    FontWeight="Bold"/>
                 <TextBlock 
                     Text="${data.cpuUsage}% ${data.memoryUsage}%"
-                    FontSize="35"
+                    FontSize="30"
                     FontWeight="Bold"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
@@ -308,12 +316,12 @@ ${serverInfo_xml}
         <Border Grid.Row="1" Grid.Column="2" Margin="0,15,0,0" BorderThickness="1" BorderBrush="#44000000" CornerRadius="5">
             <StackPanel>
                 <TextBlock Text="面板登录次数" 
-                         FontSize="16" 
-                         Margin="15,15,15,0"
-                         FontWeight="Bold"/>
+                    FontSize="16" 
+                    Margin="15,15,15,0"
+                    FontWeight="Bold"/>
                 <TextBlock 
                     Text="${data.loginFailed}:${data.logined}"
-                    FontSize="35"
+                    FontSize="30"
                     FontWeight="Bold"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
@@ -326,34 +334,49 @@ ${serverInfo_xml}
 <local:MyCard Title="${data.nodeName}" Margin="0,0,0,15">
     <Grid Margin="15,0,15,15">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="15"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/> <!-- 第一列 -->
+            <ColumnDefinition Width="15"/> <!-- 分隔列 -->
+            <ColumnDefinition Width="*"/> <!-- 第二列 -->
         </Grid.ColumnDefinitions>
 
-        <local:MyCard Title="节点地址" Grid.Row="1" Grid.Column="0" Margin="0,35,0,0" Background="Transparent">
-            <Grid>
+        <!-- 左侧区块 -->
+        <Border Grid.Column="0" Margin="0,35,0,0" BorderThickness="1" BorderBrush="#44000000" CornerRadius="5">
+            <StackPanel>
                 <TextBlock 
+                    Text="节点地址" 
+                    FontSize="13" 
+                    Margin="15,15,15,0"
+                    FontWeight="Bold"/>
+                <local:MyTextButton 
                     Text="${data.nodeIp}"
-                    FontSize="20"
+                    FontSize="35"
                     FontWeight="Bold"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
-                    Margin="0,30,0,15"/>
-            </Grid>
-        </local:MyCard>
+                    Margin="0,15,0,15"
+                    EventType="复制文本"
+                    EventData="${data.nodeIp}"
+                    Foreground="#000000"/>
+            </StackPanel>
+        </Border>
 
-        <local:MyCard Title="节点版本" Grid.Row="1" Grid.Column="2" Margin="0,35,0,0" Background="Transparent">
-            <Grid>
+        <!-- 右侧区块 -->
+        <Border Grid.Column="2" Margin="0,35,0,0" BorderThickness="1" BorderBrush="#44000000" CornerRadius="5">
+            <StackPanel>
+                <TextBlock
+                    Text="节点版本" 
+                    FontSize="13" 
+                    Margin="15,15,15,0"
+                    FontWeight="Bold"/>
                 <TextBlock 
                     Text="${data.nodeVersion}"
-                    FontSize="20"
+                    FontSize="14"
                     FontWeight="Bold"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
-                    Margin="0,30,0,15"/>
-            </Grid>
-        </local:MyCard>
+                    Margin="0,15,0,15"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </local:MyCard>
 
@@ -456,16 +479,24 @@ let serverInfo_xml = '';  // 添加这一行：在条件判断前初始化 serve
                 Margin="15,0,15,15"/>
         </StackPanel>
         
-        <local:MyButton 
-            Grid.Column="1"
-            Text="加入服务器" 
-            Margin="0,0,15,0" 
-            EventType="启动游戏" 
-            EventData="\\current|${serverConfig.serverIP}" 
-            ToolTip="将会以当前版本加入${serverConfig.serverIP}" 
-            Height="35" 
-            Width="80"
-            VerticalAlignment="Center"/>
+        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+            <local:MyButton 
+                Text="加入服务器" 
+                Margin="0,0,15,8" 
+                EventType="启动游戏" 
+                EventData="\\current|${serverConfig.serverIP}" 
+                ToolTip="将会以当前版本加入${serverConfig.serverIP}" 
+                Height="35" 
+                Width="80"/>
+            <local:MyButton 
+                Text="查看详情" 
+                Margin="0,8,15,0" 
+                EventType="打开网页" 
+                EventData="https://mcsrvstat.us/server/${serverConfig.serverIP}" 
+                ToolTip="查看服务器详细信息" 
+                Height="35" 
+                Width="80"/>
+        </StackPanel>
     </Grid>
 </local:MyCard>
 `
@@ -537,6 +568,7 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
     console.log(`服务正在[ ${PORT} ]端口运行`);
 });
+
 
 // 监听控制台输入
 const readline = require('readline');

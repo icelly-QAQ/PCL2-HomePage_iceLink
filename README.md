@@ -41,7 +41,7 @@ set PORT=xxxx node app.js （xxxx为你要指定的端口）
 5. 使用
 目前拥有的命令：
 ```
-notice <公告>     用于设置公告
+notice [公告]     用于设置公告,留空则是关闭公告
 
 exit    不用我多说吧，当然是退出啦
 ```

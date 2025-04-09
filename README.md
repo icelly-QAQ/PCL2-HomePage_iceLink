@@ -62,7 +62,8 @@ http://xxx.xxxx.xxx/?admin=[你设置的管理员令牌]     管理端
 该项目的mc服务器状态API使用的是 ***https://api.mcsrvstat.us/*** 如果出现主页响应缓慢可能是 api 的锅 qwq
 
 
-该项目遵守 CC BY-NC-SA 4.0 协议
+该项目使用 CC BY-NC-SA 4.0 协议
 
 
 项目作者 icelly_QAQ
+感谢 YuShanNan 提供的帮助

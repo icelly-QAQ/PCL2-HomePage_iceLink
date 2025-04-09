@@ -290,7 +290,7 @@ let serverInfo_xml = '';
             Fill="{StaticResource IconBrush}"/>
     </local:MyIconButton>
 </local:MyCard>
-<local:MyHint Text="提示:该主页为v0.1.4-Beta版，可能会出现许多BUG。另外，欢迎使用iceLink！" Margin="0,0,0,15" IsWarn="False"/>
+<local:MyHint Text="提示:该主页为v0.1.5-Beta版，可能会出现许多BUG。另外，欢迎使用iceLink！" Margin="0,0,0,15" IsWarn="False"/>
 
 ${serverNotice_xml}
 ${serverInfo_xml}
@@ -614,7 +614,7 @@ let serverInfo_xml = '';  // 添加这一行：在条件判断前初始化 serve
             Fill="{StaticResource IconBrush}"/>
     </local:MyIconButton>
 </local:MyCard>
-<local:MyHint Text="提示:该主页为v0.1.4-Beta版，可能会出现许多BUG。另外，欢迎使用iceLink！" Margin="0,0,0,15" IsWarn="False"/>
+<local:MyHint Text="提示:该主页为v0.1.5-Beta版，可能会出现许多BUG。另外，欢迎使用iceLink！" Margin="0,0,0,15" IsWarn="False"/>
 
 ${serverNotice_xml}
 ${serverInfo_xml}

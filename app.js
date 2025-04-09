@@ -244,6 +244,52 @@ let serverInfo_xml = '';
         
         // 使用模板字符串构建XML，使用API返回的数据
         const xml = `
+<StackPanel.Resources>
+    <SolidColorBrush x:Key="IconBrush" Color="#4A90E2"/>
+    
+    <Style x:Key="AnimatedPathStyle" TargetType="Path">
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <RotateTransform Angle="0"/>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="MouseLeftButtonDown">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation 
+                            Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)"
+                            From="0" To="360" Duration="0:0:0.5"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Style.Triggers>
+    </Style>
+</StackPanel.Resources>
+ 
+<local:MyCard Margin="-25,-25,-25,15">
+    <TextBlock Text="iceLink主页"
+        HorizontalAlignment="Left" 
+        FontSize="12" 
+        Margin="12,12,12,12"
+        FontWeight="Bold"/>
+    <local:MyIconButton 
+        Margin="0,10,15,10" 
+        Width="15" 
+        Height="15" 
+        HorizontalAlignment="Right" 
+        ToolTip="刷新" 
+        EventType="刷新主页">
+        <Path 
+            Stretch="Fill" 
+            Width="13" 
+            Height="15" 
+            Style="{StaticResource AnimatedPathStyle}"
+            Data="M256.455,8 C322.724,8.119 382.892,34.233 427.314,76.685 L463.029,40.97 C478.149,25.851 504,36.559 504,57.941 L504,192 C504,205.255 493.255,216 480,216 L345.941,216 C324.559,216 313.851,190.149 328.97,175.029 L370.72,133.279 C339.856,104.38 299.919,88.372 257.49,88.006 165.092,87.208 87.207,161.983 88.006,257.448 88.764,348.009 162.184,424 256,424 297.127,424 335.997,409.322 366.629,382.444 371.372,378.283 378.535,378.536 382.997,382.997 L422.659,422.659 C427.531,427.531 427.29,435.474 422.177,440.092 378.202,479.813 319.926,504 256,504 119.034,504 8.001,392.967 8,256.002 7.999,119.193 119.646,7.755 256.455,8 Z" 
+            Fill="{StaticResource IconBrush}"/>
+    </local:MyIconButton>
+</local:MyCard>
 <local:MyHint Text="提示:该主页为v0.1.4-Beta版，可能会出现许多BUG。另外，欢迎使用iceLink！" Margin="0,0,0,15" IsWarn="False"/>
 
 ${serverNotice_xml}
@@ -268,6 +314,11 @@ ${serverInfo_xml}
                     FontSize="16" 
                     Margin="15,15,15,0"
                     FontWeight="Bold"/>
+                <TextBlock Text="正在运行数 / 全部实例总数" 
+                    FontSize="10" 
+                    Margin="16,5,5,0"
+                    Foreground="#666666"
+                    FontWeight="Bold"/>
                 <TextBlock 
                     Text="${data.runningInstances}/${data.totalInstances}"
                     FontSize="30"
@@ -284,6 +335,11 @@ ${serverInfo_xml}
                 <TextBlock Text="节点在线数" 
                     FontSize="16" 
                     Margin="15,15,15,0"
+                    FontWeight="Bold"/>
+                <TextBlock Text="在线节点 / 总节点" 
+                    FontSize="10" 
+                    Margin="16,5,5,0"
+                    Foreground="#666666"
                     FontWeight="Bold"/>
                 <TextBlock 
                     Text="${data.running}/${data.total}"
@@ -302,6 +358,11 @@ ${serverInfo_xml}
                     FontSize="16" 
                     Margin="15,15,15,0"
                     FontWeight="Bold"/>
+                <TextBlock Text="面板主机 CPU，RAM 使用率" 
+                    FontSize="10" 
+                    Margin="16,5,5,0"
+                    Foreground="#666666"
+                    FontWeight="Bold"/>
                 <TextBlock 
                     Text="${data.cpuUsage}% ${data.memoryUsage}%"
                     FontSize="30"
@@ -318,6 +379,11 @@ ${serverInfo_xml}
                 <TextBlock Text="面板登录次数" 
                     FontSize="16" 
                     Margin="15,15,15,0"
+                    FontWeight="Bold"/>
+                <TextBlock Text="登录失败次数 : 登录成功次数" 
+                    FontSize="10" 
+                    Margin="16,5,5,0"
+                    Foreground="#666666"
                     FontWeight="Bold"/>
                 <TextBlock 
                     Text="${data.loginFailed}:${data.logined}"
@@ -370,7 +436,7 @@ ${serverInfo_xml}
                     FontWeight="Bold"/>
                 <TextBlock 
                     Text="${data.nodeVersion}"
-                    FontSize="14"
+                    FontSize="15"
                     FontWeight="Bold"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
@@ -381,8 +447,6 @@ ${serverInfo_xml}
 </local:MyCard>
 
 <local:MyHint Text="提示:当存在多个节点时默认显示第一个节点" Margin="0,0,0,15" IsWarn="False"/>
-
-<local:MyButton Text="刷新" Margin="0,0,0,15" EventType="刷新主页" Height="45"/>
 
 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
     <local:MyTextButton Text="iceLink" EventType="打开网页" EventData="https://github.com/icelly-QAQ/PCL2-HomePage_iceLink" FontSize="12" Foreground="#666666"/>
@@ -458,28 +522,28 @@ let serverInfo_xml = '';  // 添加这一行：在条件判断前初始化 serve
         <StackPanel Grid.Column="0">
             <TextBlock 
                 Text="${serverConfig.serverName}"
-                FontSize="17"
+                FontSize="18"
                 FontWeight="Bold"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Margin="15,30,0,15"/>  
+                Margin="18,30,0,15"/>  
             <TextBlock 
                 Text="服务器版本：${protocolName}"
-                FontSize="17"
+                FontSize="18"
                 FontWeight="Bold"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Margin="15,0,${marginRight},15"/>
+                Margin="18,0,${marginRight},15"/>
             <TextBlock 
                 Text="在线玩家：${playerCountString}"
-                FontSize="17"
+                FontSize="18"
                 FontWeight="Bold"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Margin="15,0,15,15"/>
+                Margin="18,0,15,15"/>
         </StackPanel>
         
-        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,22,15,0">
             <local:MyButton 
                 Text="加入服务器" 
                 Margin="0,0,15,8" 
@@ -489,11 +553,11 @@ let serverInfo_xml = '';  // 添加这一行：在条件判断前初始化 serve
                 Height="35" 
                 Width="80"/>
             <local:MyButton 
-                Text="查看详情" 
+                Text="复制地址" 
                 Margin="0,8,15,0" 
-                EventType="打开网页" 
-                EventData="https://mcsrvstat.us/server/${serverConfig.serverIP}" 
-                ToolTip="查看服务器详细信息" 
+                EventType="复制文本" 
+                EventData="${serverConfig.serverIP}" 
+                ToolTip="复制服务器地址" 
                 Height="35" 
                 Width="80"/>
         </StackPanel>
@@ -504,12 +568,56 @@ let serverInfo_xml = '';  // 添加这一行：在条件判断前初始化 serve
         
         // 使用模板字符串构建XML，使用API返回的数据
         const xml = `
-<local:MyHint Text="提示:该主页为v0.1.4-Beta版，可能会出现许多BUG。另外，欢迎使用蓝冰主页！" Margin="0,0,0,15" IsWarn="False"/>
+<StackPanel.Resources>
+    <SolidColorBrush x:Key="IconBrush" Color="#4A90E2"/>
+    
+    <Style x:Key="AnimatedPathStyle" TargetType="Path">
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <RotateTransform Angle="0"/>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="MouseLeftButtonDown">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation 
+                            Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)"
+                            From="0" To="360" Duration="0:0:0.5"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Style.Triggers>
+    </Style>
+</StackPanel.Resources>
+ 
+<local:MyCard Margin="-25,-25,-25,15">
+    <TextBlock Text="iceLink主页"
+        HorizontalAlignment="Left" 
+        FontSize="12" 
+        Margin="12,12,12,12"
+        FontWeight="Bold"/>
+    <local:MyIconButton 
+        Margin="0,10,15,10" 
+        Width="15" 
+        Height="15" 
+        HorizontalAlignment="Right" 
+        ToolTip="刷新" 
+        EventType="刷新主页">
+        <Path 
+            Stretch="Fill" 
+            Width="13" 
+            Height="15" 
+            Style="{StaticResource AnimatedPathStyle}"
+            Data="M256.455,8 C322.724,8.119 382.892,34.233 427.314,76.685 L463.029,40.97 C478.149,25.851 504,36.559 504,57.941 L504,192 C504,205.255 493.255,216 480,216 L345.941,216 C324.559,216 313.851,190.149 328.97,175.029 L370.72,133.279 C339.856,104.38 299.919,88.372 257.49,88.006 165.092,87.208 87.207,161.983 88.006,257.448 88.764,348.009 162.184,424 256,424 297.127,424 335.997,409.322 366.629,382.444 371.372,378.283 378.535,378.536 382.997,382.997 L422.659,422.659 C427.531,427.531 427.29,435.474 422.177,440.092 378.202,479.813 319.926,504 256,504 119.034,504 8.001,392.967 8,256.002 7.999,119.193 119.646,7.755 256.455,8 Z" 
+            Fill="{StaticResource IconBrush}"/>
+    </local:MyIconButton>
+</local:MyCard>
+<local:MyHint Text="提示:该主页为v0.1.4-Beta版，可能会出现许多BUG。另外，欢迎使用iceLink！" Margin="0,0,0,15" IsWarn="False"/>
 
 ${serverNotice_xml}
 ${serverInfo_xml}
-
-<local:MyButton Text="刷新" Margin="0,0,0,15" EventType="刷新主页" Height="45"/>
 
 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
     <local:MyTextButton Text="iceLink" EventType="打开网页" EventData="https://github.com/icelly-QAQ/PCL2-HomePage_iceLink" FontSize="12" Foreground="#666666"/>

@@ -60,6 +60,12 @@ http://xxx.xxxx.xxx/?admin=[你设置的管理员令牌]     管理端
 ----
 **快捷加入服务器启动的是当前选择的版本** ***（本来是想做成启动对应版本的，但是没法通配指定版本。比如你想玩1.21.1的生电服你肯定是要启动带有辅助mod的版本，而我没办法帮你选择带有辅助模组的版本，只能帮你启动1.21.1原版。所以这个功能被我砍掉了，但是服务器信息卡片上会显示服务器版本）***
 
+
+### 鸣谢
+YuShanNan
+https://github.com/YuShanNan/ChiLing-HomePage-PCL2
+
+
 ### 声明
 该项目的mc服务器状态API使用的是 ***https://api.mcsrvstat.us/*** 如果出现主页响应缓慢可能是 api 的锅 qwq
 
@@ -68,4 +74,3 @@ http://xxx.xxxx.xxx/?admin=[你设置的管理员令牌]     管理端
 
 
 项目作者 icelly_QAQ
-感谢 YuShanNan 提供的帮助

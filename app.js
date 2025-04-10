@@ -161,7 +161,6 @@ async function serveradmin(request) {
     <TextBlock 
         Text="${noticeContent}"
         FontSize="15"
-        FontWeight="Bold"
         HorizontalAlignment="Left"
         VerticalAlignment="Top"
         Margin="15,30,15,15"
@@ -274,6 +273,15 @@ let serverInfo_xml = '';
         FontSize="12" 
         Margin="12,12,12,12"
         FontWeight="Bold"/>
+    <TextBlock Text="v0.1.5"
+        HorizontalAlignment="Left" 
+        FontSize="10" 
+        Margin="80,14,12,12"/>
+    <TextBlock Text="给 iceLink 点个 star 吧~"
+        Foreground="{DynamicResource ColorBrush2}"
+        HorizontalAlignment="Right" 
+        FontSize="12" 
+        Margin="12,12,50,12"/>
     <local:MyIconButton 
         Margin="0,10,15,10" 
         Width="15" 
@@ -282,15 +290,14 @@ let serverInfo_xml = '';
         ToolTip="刷新" 
         EventType="刷新主页">
         <Path 
-            Stretch="Fill" 
-            Width="13" 
+            Stretch="Uniform"
+            Width="15" 
             Height="15" 
             Style="{StaticResource AnimatedPathStyle}"
-            Data="M256.455,8 C322.724,8.119 382.892,34.233 427.314,76.685 L463.029,40.97 C478.149,25.851 504,36.559 504,57.941 L504,192 C504,205.255 493.255,216 480,216 L345.941,216 C324.559,216 313.851,190.149 328.97,175.029 L370.72,133.279 C339.856,104.38 299.919,88.372 257.49,88.006 165.092,87.208 87.207,161.983 88.006,257.448 88.764,348.009 162.184,424 256,424 297.127,424 335.997,409.322 366.629,382.444 371.372,378.283 378.535,378.536 382.997,382.997 L422.659,422.659 C427.531,427.531 427.29,435.474 422.177,440.092 378.202,479.813 319.926,504 256,504 119.034,504 8.001,392.967 8,256.002 7.999,119.193 119.646,7.755 256.455,8 Z" 
+            Data="M7.5,0.7 C11.6,0.7 15,4.1 15,8.2 C15,12.3 11.6,15.7 7.5,15.7 C4.6,15.7 2.1,14.1 0.7,11.7 L2.3,10.9 C3.4,12.8 5.3,14 7.5,14 C10.6,14 13.2,11.4 13.2,8.2 C13.2,5.1 10.6,2.4 7.5,2.4 C5.3,2.4 3.4,3.7 2.3,5.6 L4.3,7.1 L0,7.1 L0,2.8 L1.6,4.1 C3.1,2 5.2,0.7 7.5,0.7 Z"
             Fill="{StaticResource IconBrush}"/>
     </local:MyIconButton>
 </local:MyCard>
-<local:MyHint Text="提示:该主页为v0.1.5-Beta版，可能会出现许多BUG。另外，欢迎使用iceLink！" Margin="0,0,0,15" IsWarn="False"/>
 
 ${serverNotice_xml}
 ${serverInfo_xml}
@@ -322,7 +329,6 @@ ${serverInfo_xml}
                 <TextBlock 
                     Text="${data.runningInstances}/${data.totalInstances}"
                     FontSize="30"
-                    FontWeight="Bold"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Margin="0,15,0,15"/>
@@ -344,7 +350,6 @@ ${serverInfo_xml}
                 <TextBlock 
                     Text="${data.running}/${data.total}"
                     FontSize="30"
-                    FontWeight="Bold"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Margin="0,15,0,15"/>
@@ -366,7 +371,6 @@ ${serverInfo_xml}
                 <TextBlock 
                     Text="${data.cpuUsage}% ${data.memoryUsage}%"
                     FontSize="30"
-                    FontWeight="Bold"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Margin="0,15,0,15"/>
@@ -388,7 +392,6 @@ ${serverInfo_xml}
                 <TextBlock 
                     Text="${data.loginFailed}:${data.logined}"
                     FontSize="30"
-                    FontWeight="Bold"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Margin="0,15,0,15"/>
@@ -445,8 +448,6 @@ ${serverInfo_xml}
         </Border>
     </Grid>
 </local:MyCard>
-
-<local:MyHint Text="提示:当存在多个节点时默认显示第一个节点" Margin="0,0,0,15" IsWarn="False"/>
 
 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,15">
     <local:MyTextButton Text="iceLink" EventType="打开网页" EventData="https://github.com/icelly-QAQ/PCL2-HomePage_iceLink" FontSize="12" Foreground="#666666"/>
@@ -543,7 +544,7 @@ let serverInfo_xml = '';  // 添加这一行：在条件判断前初始化 serve
                 Margin="18,0,15,15"/>
         </StackPanel>
         
-        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,22,15,0">
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,22,5,0">
             <local:MyButton 
                 Text="加入服务器" 
                 Margin="0,0,15,8" 
@@ -598,6 +599,15 @@ let serverInfo_xml = '';  // 添加这一行：在条件判断前初始化 serve
         FontSize="12" 
         Margin="12,12,12,12"
         FontWeight="Bold"/>
+    <TextBlock Text="v0.1.5"
+        HorizontalAlignment="Left" 
+        FontSize="10" 
+        Margin="80,14,12,12"/>
+    <TextBlock Text="给 iceLink 点个 star 吧~"
+        Foreground="{DynamicResource ColorBrush2}"
+        HorizontalAlignment="Right" 
+        FontSize="12" 
+        Margin="12,12,50,12"/>
     <local:MyIconButton 
         Margin="0,10,15,10" 
         Width="15" 
@@ -606,15 +616,14 @@ let serverInfo_xml = '';  // 添加这一行：在条件判断前初始化 serve
         ToolTip="刷新" 
         EventType="刷新主页">
         <Path 
-            Stretch="Fill" 
-            Width="13" 
+            Stretch="Uniform"
+            Width="15" 
             Height="15" 
             Style="{StaticResource AnimatedPathStyle}"
-            Data="M256.455,8 C322.724,8.119 382.892,34.233 427.314,76.685 L463.029,40.97 C478.149,25.851 504,36.559 504,57.941 L504,192 C504,205.255 493.255,216 480,216 L345.941,216 C324.559,216 313.851,190.149 328.97,175.029 L370.72,133.279 C339.856,104.38 299.919,88.372 257.49,88.006 165.092,87.208 87.207,161.983 88.006,257.448 88.764,348.009 162.184,424 256,424 297.127,424 335.997,409.322 366.629,382.444 371.372,378.283 378.535,378.536 382.997,382.997 L422.659,422.659 C427.531,427.531 427.29,435.474 422.177,440.092 378.202,479.813 319.926,504 256,504 119.034,504 8.001,392.967 8,256.002 7.999,119.193 119.646,7.755 256.455,8 Z" 
+            Data="M7.5,0.7 C11.6,0.7 15,4.1 15,8.2 C15,12.3 11.6,15.7 7.5,15.7 C4.6,15.7 2.1,14.1 0.7,11.7 L2.3,10.9 C3.4,12.8 5.3,14 7.5,14 C10.6,14 13.2,11.4 13.2,8.2 C13.2,5.1 10.6,2.4 7.5,2.4 C5.3,2.4 3.4,3.7 2.3,5.6 L4.3,7.1 L0,7.1 L0,2.8 L1.6,4.1 C3.1,2 5.2,0.7 7.5,0.7 Z"
             Fill="{StaticResource IconBrush}"/>
     </local:MyIconButton>
 </local:MyCard>
-<local:MyHint Text="提示:该主页为v0.1.5-Beta版，可能会出现许多BUG。另外，欢迎使用iceLink！" Margin="0,0,0,15" IsWarn="False"/>
 
 ${serverNotice_xml}
 ${serverInfo_xml}

@@ -2,11 +2,13 @@
 
 ***该项目为PCL2的主页预设***
 #### 预览图（管理端）
-![管理端预览图](https://github.com/user-attachments/assets/21af243c-7517-4593-b7b0-27aacebc6849)
+![管理端预览图](https://github.com/user-attachments/assets/cf517195-3626-4ea0-ae7d-dd87e18ac9c3)
+
 
 
 #### 预览图（客户端）
-![客户端预览图](https://github.com/user-attachments/assets/5ebadd12-33a0-4e2f-8e5b-d1001e03e6ac)
+![客户端预览图](https://github.com/user-attachments/assets/eebc4d40-95b6-440e-ac65-ef601f3dae4b)
+
 
 
 ------

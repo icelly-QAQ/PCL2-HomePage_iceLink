@@ -21,7 +21,7 @@
 2. 运行 node app.js 生成默认配置文件
 3. 修改 config.json 内的配置 （***“注意：下方未提起的配置项请不要随意修改”***）
 ```
-const ip = "xxxxx";      修改为你面板的地址
+const ip = "xxxxx";      修改为你面板的地址（面板地址不需要带有协议，如 http://***.***.*** 则只需要填写 ***.***.***）
 const apikey ="xxxxx";   修改为你的apikey
 （获取apikey的方法https://docs.mcsmanager.com/zh_cn/apis/get_apikey.html）
 

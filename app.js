@@ -51,27 +51,49 @@ const http = require('http');
 const https = require('https');
 
 async function fetchOverviewData() {
-    return new Promise((resolve, reject) => {
-        http.get(`http://${ip}/api/overview?apikey=${apikey}`, (res) => {
-            let data = '';
+    // 创建一个通用的请求处理函数
+    const makeRequest = (protocol) => {
+        return new Promise((resolve, reject) => {
+            const client = protocol === 'https' ? https : http;
+            const url = `${protocol}://${ip}/api/overview?apikey=${apikey}`;
+            
+            client.get(url, (res) => {
+                let data = '';
+                
+                res.on('data', (chunk) => {
+                    data += chunk;
+                });
 
-            res.on('data', (chunk) => {
-                data += chunk;
+                res.on('end', () => {
+                    try {
+                        const jsonData = JSON.parse(data);
+                        debug && console.log('API Response:', JSON.stringify(jsonData, null, 2));
+                        resolve(jsonData);
+                    } catch (error) {
+                        reject(error);
+                    }
+                });
+            }).on('error', (error) => {
+                reject(error);
             });
-
-            res.on('end', () => {
-                try {
-                    const jsonData = JSON.parse(data);
-                    debug && console.log('API Response:', JSON.stringify(jsonData, null, 2));
-                    resolve(jsonData);
-                } catch (error) {
-                    reject(error);
-                }
-            });
-        }).on('error', (error) => {
-            reject(error);
         });
-    });
+    };
+
+    try {
+        // 首先尝试 HTTP 请求
+        debug && console.log('尝试使用 HTTP 请求...');
+        return await makeRequest('http');
+    } catch (httpError) {
+        debug && console.log('HTTP 请求失败，尝试使用 HTTPS...');
+        try {
+            // HTTP 失败后尝试 HTTPS
+            return await makeRequest('https');
+        } catch (httpsError) {
+            // 两种协议都失败时
+            console.error('面板连接失败：无法连接到面板地址');
+            throw new Error('面板地址无效或无法连接');
+        }
+    }
 }
 
 async function getServerInfo() {

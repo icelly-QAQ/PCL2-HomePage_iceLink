@@ -2,11 +2,13 @@
 
 ***该项目为PCL2的主页预设***
 #### 预览图（管理端）
-![管理端预览图](https://github.com/user-attachments/assets/21af243c-7517-4593-b7b0-27aacebc6849)
+![管理端预览图](https://github.com/user-attachments/assets/cf517195-3626-4ea0-ae7d-dd87e18ac9c3)
+
 
 
 #### 预览图（客户端）
-![客户端预览图](https://github.com/user-attachments/assets/5ebadd12-33a0-4e2f-8e5b-d1001e03e6ac)
+![客户端预览图](https://github.com/user-attachments/assets/eebc4d40-95b6-440e-ac65-ef601f3dae4b)
+
 
 
 ------
@@ -19,7 +21,7 @@
 2. 运行 node app.js 生成默认配置文件
 3. 修改 config.json 内的配置 （***“注意：下方未提起的配置项请不要随意修改”***）
 ```
-const ip = "xxxxx";      修改为你面板的地址
+const ip = "xxxxx";      修改为你面板的地址（面板地址不需要带有协议，如 http://***.***.*** 则只需要填写 ***.***.***）
 const apikey ="xxxxx";   修改为你的apikey
 （获取apikey的方法https://docs.mcsmanager.com/zh_cn/apis/get_apikey.html）
 
@@ -63,6 +65,8 @@ http://xxx.xxxx.xxx/?admin=[你设置的管理员令牌]     管理端
 
 ### 鸣谢
 YuShanNan
+
+
 https://github.com/YuShanNan/ChiLing-HomePage-PCL2
 
 

@@ -84,15 +84,10 @@ http://xxx.xxxx.xxx/?admin=[你设置的管理员令牌]     管理端
 
 
 ### 鸣谢
-**JJxiongmao**
-
-
 **YuShanNan**
 
 
 https://github.com/YuShanNan/ChiLing-HomePage-PCL2
-
-***排序并无先后顺序***
 
 
 ### 声明

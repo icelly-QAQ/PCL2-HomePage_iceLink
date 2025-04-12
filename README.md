@@ -45,7 +45,7 @@
 | `ip` | string | 是 | 面板地址（无需协议头） | `panel.example.com` |
 | `apikey` | string | 是 | MCSManager API Key | `123e4567-e89b-12d3-a456-426614174000` |
 | `setToken` | string | 是 | 管理员访问令牌 | `MySecureToken123` |
-| `debug` | boolean | 否 | 调试模式开关 | `false` |
+| `debug` | boolean | 是 | 调试模式开关 | `false` |
 | `serverConfig.serverName` | string | 否 | 显示在页面的服务器名称 | `生存服` |
 | `serverConfig.serverIP` | string | 否 | 游戏服务器IP地址 | `mc.example.com` |
 | `serverConfig.serverPORT` | number | 否 | 游戏服务器端口 | `25565` |

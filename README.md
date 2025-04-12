@@ -118,7 +118,8 @@ https://github.com/YuShanNan/ChiLing-HomePage-PCL2
 该项目的mc服务器状态API使用的是 ***https://api.mcsrvstat.us/*** 如果出现主页响应缓慢可能是 api 的锅 qwq
 
 
-该项目使用 CC BY-NC-SA 4.0 协议
+![CC BY-NC-SA 4.0](https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png)  
+本作品采用[知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议](http://creativecommons.org/licenses/by-nc-sa/4.0/)授权。
 
 
 项目作者 icelly_QAQ

@@ -51,6 +51,8 @@
 | `serverConfig.serverPORT` | number | 否 | 游戏服务器端口 | `25565` |
 
 4. 运行
+
+
 **基础启动：**
 ```
 node app.js

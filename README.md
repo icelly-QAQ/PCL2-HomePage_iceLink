@@ -14,35 +14,55 @@
 ------
 
 ### 环境需求
-+ node.js >= v15.14.0
+- **Node.js** ≥ v15.14.0  
+  [官方下载地址](https://nodejs.org/)  
+  安装后可通过以下命令验证版本：
+  ```
+  node -v
+  npm -v
+  ```
 
 ### 部署
-1. 在 releases 中下载最新的 app.js 文件
+1. 在 [releases](https://github.com/icelly-QAQ/PCL2-HomePage_iceLink/releases/) 中下载最新的 app.js 文件
 2. 在 app.js 同目录下的终端运行 node app.js 生成默认配置文件
 3. 修改 config.json 内的配置 （***“注意：下方未提起的配置项请不要随意修改”***）
 ```
-const ip = "xxxxx";      修改为你面板的地址（面板地址不需要带有协议，如 http://***.***.*** 则只需要填写 ***.***.***）
-const apikey ="xxxxx";   修改为你的apikey
-（获取apikey的方法https://docs.mcsmanager.com/zh_cn/apis/get_apikey.html）
-
-const setToken = "";     设置管理员令牌（用于区分客户端和服务端）
-
-const debug = false     调试开关：true-显示调试信息，false-不显示任何调试信息
-
-const serverConfig = {
-    serverName: "",  // 服务器名称(可留空，留空时显示服务器地址)
-    serverIP: "",    // 服务器地址(可留空，留空时不显示mc服务器状态)
-    serverPORT: ""   // 服务器端口(可留空，默认为25565)
+{
+  "ip": "面板地址",
+  "apikey": "您的API密钥",
+  "setToken": "管理员令牌",
+  "debug": false,
+  "serverConfig": {
+    "serverName": "服务器名称",
+    "serverIP": "服务器地址",
+    "serverPORT": "服务器端口"
+  }
 }
 ```
+
+| 配置项 | 类型 | 必填 | 说明 | 示例值 |
+|--------|------|------|------|--------|
+| `ip` | string | 是 | 面板地址（无需协议头） | `panel.example.com` |
+| `apikey` | string | 是 | MCSManager API Key | `123e4567-e89b-12d3-a456-426614174000` |
+| `setToken` | string | 是 | 管理员访问令牌 | `MySecureToken123` |
+| `debug` | boolean | 否 | 调试模式开关 | `false` |
+| `serverConfig.serverName` | string | 否 | 显示在页面的服务器名称 | `生存服` |
+| `serverConfig.serverIP` | string | 否 | 游戏服务器IP地址 | `mc.example.com` |
+| `serverConfig.serverPORT` | number | 否 | 游戏服务器端口 | `25565` |
+
 4. 运行
+**基础启动：**
 ```
-默认启动命令:
 node app.js
+```
 
+**自定义端口启动：**
+```
+# Windows
+set PORT=3000 && node app.js
 
-如果需要指定端口运行则:
-set PORT=xxxx node app.js （xxxx为你要指定的端口）
+# Linux/macOS
+PORT=3000 node app.js
 ```
 
 5. 使用
@@ -61,9 +81,9 @@ exit    不用我多说吧，当然是退出啦
 在主页链接后加上admin参数
 比如：
 ```
-http://xxx.xxxx.xxx     客户端
+http://localhost:3000     客户端
 
-http://xxx.xxxx.xxx/?admin=[你设置的管理员令牌]     管理端
+http://localhost:3000/?admin=[您设置的管理员令牌]     管理端
 ```
 
 

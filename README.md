@@ -26,7 +26,7 @@ iceLink 冰点链接是为PCL2启动器设计的服务器信息面板系统，�
 
 ### 部署
 1. 在 [releases](https://github.com/icelly-QAQ/PCL2-HomePage_iceLink/releases/) 中下载最新的 app.js 文件
-2. 在 app.js 同目录下的终端运行 node app.js 生成默认配置文件
+2. 在 app.js 同目录下的终端运行```node app.js```生成默认配置文件
 3. 修改 config.json 内的配置 （***“注意：下方未提起的配置项请不要随意修改”***）
 ```
 {

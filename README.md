@@ -17,8 +17,8 @@
 + node.js >= v15.14.0
 
 ### 部署
-1. 下载 js 文件
-2. 运行 node app.js 生成默认配置文件
+1. 在 releases 中下载最新的 app.js 文件
+2. 在 app.js 同目录下的终端运行 node app.js 生成默认配置文件
 3. 修改 config.json 内的配置 （***“注意：下方未提起的配置项请不要随意修改”***）
 ```
 const ip = "xxxxx";      修改为你面板的地址（面板地址不需要带有协议，如 http://***.***.*** 则只需要填写 ***.***.***）
@@ -27,7 +27,7 @@ const apikey ="xxxxx";   修改为你的apikey
 
 const setToken = "";     设置管理员令牌（用于区分客户端和服务端）
 
-const debug = false     调试开关：true-显示调试信息，false-不显示任何信息
+const debug = false     调试开关：true-显示调试信息，false-不显示任何调试信息
 
 const serverConfig = {
     serverName: "",  // 服务器名称(可留空，留空时显示服务器地址)
@@ -37,12 +37,17 @@ const serverConfig = {
 ```
 4. 运行
 ```
+默认启动命令:
 node app.js
-如果需要指定端口运行则
+
+
+如果需要指定端口运行则:
 set PORT=xxxx node app.js （xxxx为你要指定的端口）
 ```
 
 5. 使用
+
+
 目前拥有的命令：
 ```
 notice [公告]     用于设置公告,留空则是关闭公告
@@ -50,7 +55,9 @@ notice [公告]     用于设置公告,留空则是关闭公告
 exit    不用我多说吧，当然是退出啦
 ```
 
-#### 如何区分管理端和客户端：
+6. 如何区分管理端和客户端：
+
+
 在主页链接后加上admin参数
 比如：
 ```
@@ -59,15 +66,33 @@ http://xxx.xxxx.xxx     客户端
 http://xxx.xxxx.xxx/?admin=[你设置的管理员令牌]     管理端
 ```
 
+
+7. 在 PCL2 中使用：
+
+
+前往 设置 -> 个性化 -> 主题 -> 联网更新
+![屏幕截图 2025-04-12 114228](https://github.com/user-attachments/assets/978a61b0-11f6-4a6f-8a4a-6b33518cb26b)
+
+![屏幕截图 2025-04-12 114352](https://github.com/user-attachments/assets/835d9d65-b641-42c6-9580-99708290d892)
+
+在地址栏填入主页链接
+
+
+
 ----
 **快捷加入服务器启动的是当前选择的版本** ***（本来是想做成启动对应版本的，但是没法通配指定版本。比如你想玩1.21.1的生电服你肯定是要启动带有辅助mod的版本，而我没办法帮你选择带有辅助模组的版本，只能帮你启动1.21.1原版。所以这个功能被我砍掉了，但是服务器信息卡片上会显示服务器版本）***
 
 
 ### 鸣谢
-YuShanNan
+**JJxiongmao**
+
+
+**YuShanNan**
 
 
 https://github.com/YuShanNan/ChiLing-HomePage-PCL2
+
+***排序并无先后顺序***
 
 
 ### 声明

@@ -204,7 +204,7 @@ let serverInfo_xml = '';
             const playersOnline = serverInfo.players?.online || 0;
             const playersMax = serverInfo.players?.max || 0;
             
-            // 计算玩家数量字符串的长度并添加额外的15px
+            // 计算玩家数量字符串的长度并添加额外的28px
             const playerCountString = `${playersOnline}/${playersMax}`;
             const marginRight = playerCountString.length * 10 + 28; // 假设每个字符约10px宽
             
@@ -295,7 +295,7 @@ let serverInfo_xml = '';
         FontSize="12" 
         Margin="12,12,12,12"
         FontWeight="Bold"/>
-    <TextBlock Text="v0.1.5"
+    <TextBlock Text="v0.1.6"
         HorizontalAlignment="Left" 
         FontSize="10" 
         Margin="80,14,12,12"/>
@@ -480,7 +480,7 @@ ${serverInfo_xml}
 
         return new Response(xml, {
             headers: {
-                'Content-Type': 'text/html',
+                'Content-Type': 'text/html; charset=utf-8',  // 添加 charset=utf-8
                 'Cache-Control': 'public, max-age=300',
             },
         });
@@ -488,7 +488,7 @@ ${serverInfo_xml}
         return new Response(`Error: ${error.message}`, {
             status: 500,
             headers: {
-                'Content-Type': 'text/plain',
+                'Content-Type': 'text/plain; charset=utf-8',  // 添加 charset=utf-8
             },
         });
     }
@@ -621,7 +621,7 @@ let serverInfo_xml = '';  // 添加这一行：在条件判断前初始化 serve
         FontSize="12" 
         Margin="12,12,12,12"
         FontWeight="Bold"/>
-    <TextBlock Text="v0.1.5"
+    <TextBlock Text="v0.1.6"
         HorizontalAlignment="Left" 
         FontSize="10" 
         Margin="80,14,12,12"/>
@@ -659,7 +659,7 @@ ${serverInfo_xml}
 
         return new Response(xml, {
             headers: {
-                'Content-Type': 'text/html',
+                'Content-Type': 'text/html; charset=utf-8',  // 添加 charset=utf-8
                 'Cache-Control': 'public, max-age=300',
             },
         });
@@ -667,7 +667,7 @@ ${serverInfo_xml}
         return new Response(`Error: ${error.message}`, {
             status: 500,
             headers: {
-                'Content-Type': 'text/plain',
+                'Content-Type': 'text/plain; charset=utf-8',  // 添加 charset=utf-8
             },
         });
     }
@@ -693,11 +693,16 @@ const server = http.createServer(async (req, res) => {
             response = await clientInfo();
         }
 
-        res.writeHead(200, response.headers);
+        res.writeHead(200, {
+            ...response.headers,
+            'Content-Type': 'text/html; charset=utf-8'  // 添加 charset=utf-8
+        });
         res.end(await response.text());
     } catch (error) {
         debug && console.error('服务器错误:', error);
-        res.writeHead(500, { 'Content-Type': 'text/plain' });
+        res.writeHead(500, { 
+            'Content-Type': 'text/plain; charset=utf-8'  // 添加 charset=utf-8
+        });
         res.end('Internal Server Error');
     }
 });

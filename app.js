@@ -7,10 +7,17 @@ const defaultConfig = {
     apikey: "xxxx",  // 面板API密钥
     setToken: "xxxx",  // 设置管理员令牌
     debug: false,     // 调试开关：true-显示调试信息，false-不显示任何信息
-    serverConfig: {
-        serverName: "",  // 服务器名称(可留空，留空时显示服务器地址)
-        serverIP: "",  // 服务器地址(可留空，留空时不显示mc服务器状态)
-        serverPORT: ""  // 服务器端口(可留空，默认为25565)
+    servers: {
+        serverConfig_1: {
+            serverName: "",  // 服务器名称(可留空，留空时显示服务器地址)
+            serverIP: "",  // 服务器地址(可留空，留空时不显示mc服务器状态)
+            serverPORT: ""  // 服务器端口(可留空，默认为25565)
+        },
+        serverConfig_2: {
+            serverName: "",  // 服务器名称(可留空，留空时显示服务器地址)
+            serverIP: "",  // 服务器地址(可留空，留空时不显示mc服务器状态)
+            serverPORT: ""  // 服务器端口(可留空，默认为25565)
+        },
     }
 };
 
@@ -96,13 +103,13 @@ async function fetchOverviewData() {
     }
 }
 
-async function getServerInfo() {
-    if (!serverConfig.serverName) {
-        serverConfig.serverName = serverConfig.serverIP;
-    }
-
-    if (!serverConfig.serverIP) {
-        return { online: '未配置' };
+// 修改 getServerInfo 函数
+async function getServerInfo(serverConfig) {
+    if (!serverConfig || !serverConfig.serverIP) {
+        return { 
+            protocol: { name: '未知版本' },
+            players: { online: 0, max: 0 }
+        };
     }
 
     // 构建基础 URL，使用默认端口25565
@@ -194,77 +201,92 @@ async function serveradmin(request) {
     serverNotice_xml = ``
 }
 
-// 初始化服务器信息变量
-let serverInfo_xml = '';
-
-        // 仅当 serverIP 存在时才获取并插入服务器信息
-        if (serverConfig.serverIP) {
-            const serverInfo = await getServerInfo();
-            const protocolName = serverInfo.protocol?.name || '未知版本';
-            const playersOnline = serverInfo.players?.online || 0;
-            const playersMax = serverInfo.players?.max || 0;
-            
-            // 计算玩家数量字符串的长度并添加额外的28px
-            const playerCountString = `${playersOnline}/${playersMax}`;
-            const marginRight = playerCountString.length * 10 + 28; // 假设每个字符约10px宽
-            
-            serverInfo_xml = `
+// 修改服务器信息卡片的生成部分
+let serverInfo_xml = `
 <local:MyCard Title="MC服务器信息" Margin="0,0,0,15">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        
-        <StackPanel Grid.Column="0">
-            <TextBlock 
-                Text="${serverConfig.serverName}"
-                FontSize="18"
-                FontWeight="Bold"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Margin="18,30,0,15"/>  
-            <TextBlock 
-                Text="服务器版本：${protocolName}"
-                FontSize="18"
-                FontWeight="Bold"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Margin="18,0,${marginRight},15"/>
-            <TextBlock 
-                Text="在线玩家：${playerCountString}"
-                FontSize="18"
-                FontWeight="Bold"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Margin="18,0,15,15"/>
-        </StackPanel>
-        
-        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,22,15,0">
-            <local:MyButton 
-                Text="加入服务器" 
-                Margin="0,0,15,8" 
-                EventType="启动游戏" 
-                EventData="\\current|${serverConfig.serverIP}" 
-                ToolTip="将会以当前版本加入${serverConfig.serverIP}" 
-                Height="35" 
-                Width="80"/>
-            <local:MyButton 
-                Text="复制地址" 
-                Margin="0,8,15,0" 
-                EventType="复制文本" 
-                EventData="${serverConfig.serverIP}" 
-                ToolTip="复制服务器地址" 
-                Height="35" 
-                Width="80"/>
-        </StackPanel>
-    </Grid>
-</local:MyCard>
-`
+    <StackPanel>
+`;
+
+// 修改服务器信息部分的代码
+let isFirst = true;
+for (const [configKey, serverConfig] of Object.entries(config.servers)) {
+    if (serverConfig.serverIP) {
+        // 如果不是第一个服务器，添加分隔线
+        if (!isFirst) {
+            serverInfo_xml += `
+        <Border Height="1" Background="#22000000" Margin="15,0,15,0"/>`;
         }
+
+        const serverInfo = await getServerInfo(serverConfig);
+        const protocolName = serverInfo.protocol?.name || '未知版本';
+        const playersOnline = serverInfo.players?.online || 0;
+        const playersMax = serverInfo.players?.max || 0;
         
-        // 使用模板字符串构建XML，使用API返回的数据
-        const xml = `
+        const playerCountString = `${playersOnline}/${playersMax}`;
+        const marginRight = playerCountString.length * 10 + 28;
+        
+        // 添加服务器信息
+        serverInfo_xml += `
+        <Grid Margin="15,${isFirst ? '35' : '15'},15,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Grid.Column="0">
+                <TextBlock 
+                    Text="${serverConfig.serverName || serverConfig.serverIP}"
+                    FontSize="18"
+                    FontWeight="Bold"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="0,0,0,15"/>  
+                <TextBlock 
+                    Text="服务器版本：${protocolName}"
+                    FontSize="18"
+                    FontWeight="Bold"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="0,0,${marginRight},15"/>
+                <TextBlock 
+                    Text="在线玩家：${playerCountString}"
+                    FontSize="18"
+                    FontWeight="Bold"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="0,0,0,0"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                <local:MyButton 
+                    Text="加入服务器" 
+                    Margin="0,0,15,8" 
+                    EventType="启动游戏" 
+                    EventData="\\current|${serverConfig.serverIP}" 
+                    ToolTip="将会以当前版本加入${serverConfig.serverIP}" 
+                    Height="35" 
+                    Width="80"/>
+                <local:MyButton 
+                    Text="复制地址" 
+                    Margin="0,8,15,0" 
+                    EventType="复制文本" 
+                    EventData="${serverConfig.serverIP}" 
+                    ToolTip="复制服务器地址" 
+                    Height="35" 
+                    Width="80"/>
+            </StackPanel>
+        </Grid>`;
+        
+        isFirst = false;
+    }
+}
+
+serverInfo_xml += `
+    </StackPanel>
+</local:MyCard>`;
+
+// 使用模板字符串构建XML，使用API返回的数据
+const xml = `
 <StackPanel.Resources>
     <SolidColorBrush x:Key="IconBrush" Color="#4A90E2"/>
     
@@ -295,7 +317,7 @@ let serverInfo_xml = '';
         FontSize="12" 
         Margin="12,12,12,12"
         FontWeight="Bold"/>
-    <TextBlock Text="v0.1.6"
+    <TextBlock Text="v1.8"
         HorizontalAlignment="Left" 
         FontSize="10" 
         Margin="80,14,12,12"/>
@@ -520,77 +542,92 @@ async function clientInfo() {
     serverNotice_xml = ``  // 修改这里：将 serverInfo_xml 改为 serverNotice_xml
 }
 
-// 初始化服务器信息变量
-let serverInfo_xml = '';  // 添加这一行：在条件判断前初始化 serverInfo_xml
-
-        // 仅当 serverIP 存在时才获取并插入服务器信息
-        if (serverConfig.serverIP) {
-            const serverInfo = await getServerInfo();
-            const protocolName = serverInfo.protocol?.name || '未知版本';
-            const playersOnline = serverInfo.players?.online || 0;
-            const playersMax = serverInfo.players?.max || 0;
-            
-            // 计算玩家数量字符串的长度并添加额外的15px
-            const playerCountString = `${playersOnline}/${playersMax}`;
-            const marginRight = playerCountString.length * 10 + 12; // 假设每个字符约10px宽
-            
-            serverInfo_xml = `
+// 修改服务器信息卡片的生成部分
+let serverInfo_xml = `
 <local:MyCard Title="MC服务器信息" Margin="0,0,0,15">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        
-        <StackPanel Grid.Column="0">
-            <TextBlock 
-                Text="${serverConfig.serverName}"
-                FontSize="18"
-                FontWeight="Bold"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Margin="18,30,0,15"/>  
-            <TextBlock 
-                Text="服务器版本：${protocolName}"
-                FontSize="18"
-                FontWeight="Bold"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Margin="18,0,${marginRight},15"/>
-            <TextBlock 
-                Text="在线玩家：${playerCountString}"
-                FontSize="18"
-                FontWeight="Bold"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Margin="18,0,15,15"/>
-        </StackPanel>
-        
-        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,22,5,0">
-            <local:MyButton 
-                Text="加入服务器" 
-                Margin="0,0,15,8" 
-                EventType="启动游戏" 
-                EventData="\\current|${serverConfig.serverIP}" 
-                ToolTip="将会以当前版本加入${serverConfig.serverIP}" 
-                Height="35" 
-                Width="80"/>
-            <local:MyButton 
-                Text="复制地址" 
-                Margin="0,8,15,0" 
-                EventType="复制文本" 
-                EventData="${serverConfig.serverIP}" 
-                ToolTip="复制服务器地址" 
-                Height="35" 
-                Width="80"/>
-        </StackPanel>
-    </Grid>
-</local:MyCard>
-`
+    <StackPanel>
+`;
+
+// 修改服务器信息部分的代码
+let isFirst = true;
+for (const [configKey, serverConfig] of Object.entries(config.servers)) {
+    if (serverConfig.serverIP) {
+        // 如果不是第一个服务器，添加分隔线
+        if (!isFirst) {
+            serverInfo_xml += `
+        <Border Height="1" Background="#22000000" Margin="15,0,15,0"/>`;
         }
+
+        const serverInfo = await getServerInfo(serverConfig);
+        const protocolName = serverInfo.protocol?.name || '未知版本';
+        const playersOnline = serverInfo.players?.online || 0;
+        const playersMax = serverInfo.players?.max || 0;
         
-        // 使用模板字符串构建XML，使用API返回的数据
-        const xml = `
+        const playerCountString = `${playersOnline}/${playersMax}`;
+        const marginRight = playerCountString.length * 10 + 28;
+        
+        // 添加服务器信息
+        serverInfo_xml += `
+        <Grid Margin="15,${isFirst ? '35' : '15'},15,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Grid.Column="0">
+                <TextBlock 
+                    Text="${serverConfig.serverName || serverConfig.serverIP}"
+                    FontSize="18"
+                    FontWeight="Bold"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="0,0,0,15"/>  
+                <TextBlock 
+                    Text="服务器版本：${protocolName}"
+                    FontSize="18"
+                    FontWeight="Bold"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="0,0,${marginRight},15"/>
+                <TextBlock 
+                    Text="在线玩家：${playerCountString}"
+                    FontSize="18"
+                    FontWeight="Bold"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Margin="0,0,0,0"/>
+            </StackPanel>
+            
+            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                <local:MyButton 
+                    Text="加入服务器" 
+                    Margin="0,0,15,8" 
+                    EventType="启动游戏" 
+                    EventData="\\current|${serverConfig.serverIP}" 
+                    ToolTip="将会以当前版本加入${serverConfig.serverIP}" 
+                    Height="35" 
+                    Width="80"/>
+                <local:MyButton 
+                    Text="复制地址" 
+                    Margin="0,8,15,0" 
+                    EventType="复制文本" 
+                    EventData="${serverConfig.serverIP}" 
+                    ToolTip="复制服务器地址" 
+                    Height="35" 
+                    Width="80"/>
+            </StackPanel>
+        </Grid>`;
+        
+        isFirst = false;
+    }
+}
+
+serverInfo_xml += `
+    </StackPanel>
+</local:MyCard>`;
+
+// 使用模板字符串构建XML，使用API返回的数据
+const xml = `
 <StackPanel.Resources>
     <SolidColorBrush x:Key="IconBrush" Color="#4A90E2"/>
     
@@ -621,7 +658,7 @@ let serverInfo_xml = '';  // 添加这一行：在条件判断前初始化 serve
         FontSize="12" 
         Margin="12,12,12,12"
         FontWeight="Bold"/>
-    <TextBlock Text="v0.1.6"
+    <TextBlock Text="v1.8"
         HorizontalAlignment="Left" 
         FontSize="10" 
         Margin="80,14,12,12"/>

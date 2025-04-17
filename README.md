@@ -74,7 +74,7 @@ v1.8 版本！
 | 配置项 | 类型 | 必填 | 说明 | 示例值 |
 |--------|------|------|------|--------|
 | `ip` | string | 是 | 面板地址（无需协议头） | `panel.example.com` |
-| `apikey` | string | 是 | MCSManager API Key | `123e4567-e89b-12d3-a456-426614174000` |
+| `apikey` | string | 是 | MCSManager API Key | `123e4567e89b12d3a456426614174000` |
 | `setToken` | string | 是 | 管理员访问令牌 | `MySecureToken123` |
 | `debug` | boolean | 是 | 调试模式开关 | `false` |
 | `servers.serverConfig_x.serverName` | string | 否 | (x为第几个服务器信息)显示在页面的服务器名称 | `生存服` |

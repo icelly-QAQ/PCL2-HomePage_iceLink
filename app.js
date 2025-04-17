@@ -530,7 +530,6 @@ async function clientInfo() {
     <TextBlock 
         Text="${noticeContent}"
         FontSize="15"
-        FontWeight="Bold"
         HorizontalAlignment="Left"
         VerticalAlignment="Top"
         Margin="15,30,15,15"

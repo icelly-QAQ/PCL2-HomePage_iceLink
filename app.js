@@ -178,11 +178,10 @@ async function formatOverviewData(rawData) {
 
 async function serveradmin(request) {
     try {
-        // 获取并格式化数据
         const rawData = await fetchOverviewData();
         const data = await formatOverviewData(rawData);
         
-        let serverNotice_xml = '';  // 初始化为空字符串
+        let serverNotice_xml = '';
         
         if (noticeContent) {
             serverNotice_xml = `
@@ -201,13 +200,13 @@ async function serveradmin(request) {
     serverNotice_xml = ``
 }
 
-// 修改服务器信息卡片的生成部分
+
 let serverInfo_xml = `
 <local:MyCard Title="MC服务器信息" Margin="0,0,0,15">
     <StackPanel>
 `;
 
-// 修改服务器信息部分的代码
+
 let isFirst = true;
 for (const [configKey, serverConfig] of Object.entries(config.servers)) {
     if (serverConfig.serverIP) {
@@ -225,7 +224,7 @@ for (const [configKey, serverConfig] of Object.entries(config.servers)) {
         const playerCountString = `${playersOnline}/${playersMax}`;
         const marginRight = playerCountString.length * 10 + 28;
         
-        // 添加服务器信息
+
         serverInfo_xml += `
         <Grid Margin="15,${isFirst ? '35' : '15'},15,15">
             <Grid.ColumnDefinitions>
@@ -285,7 +284,7 @@ serverInfo_xml += `
     </StackPanel>
 </local:MyCard>`;
 
-// 使用模板字符串构建XML，使用API返回的数据
+
 const xml = `
 <StackPanel.Resources>
     <SolidColorBrush x:Key="IconBrush" Color="#4A90E2"/>
@@ -502,7 +501,7 @@ ${serverInfo_xml}
 
         return new Response(xml, {
             headers: {
-                'Content-Type': 'text/html; charset=utf-8',  // 添加 charset=utf-8
+                'Content-Type': 'text/html; charset=utf-8',
                 'Cache-Control': 'public, max-age=300',
             },
         });
@@ -510,7 +509,7 @@ ${serverInfo_xml}
         return new Response(`Error: ${error.message}`, {
             status: 500,
             headers: {
-                'Content-Type': 'text/plain; charset=utf-8',  // 添加 charset=utf-8
+                'Content-Type': 'text/plain; charset=utf-8',
             },
         });
     }
@@ -518,11 +517,10 @@ ${serverInfo_xml}
 
 async function clientInfo() {
     try {
-        // 获取并格式化数据
         const rawData = await fetchOverviewData();
         const data = await formatOverviewData(rawData);
         
-        let serverNotice_xml = '';  // 初始化为空字符串
+        let serverNotice_xml = '';
         
         if (noticeContent) {
             serverNotice_xml = `
@@ -538,16 +536,16 @@ async function clientInfo() {
 </local:MyCard>
 `
 } else {
-    serverNotice_xml = ``  // 修改这里：将 serverInfo_xml 改为 serverNotice_xml
+    serverNotice_xml = ``
 }
 
-// 修改服务器信息卡片的生成部分
+
 let serverInfo_xml = `
 <local:MyCard Title="MC服务器信息" Margin="0,0,0,15">
     <StackPanel>
 `;
 
-// 修改服务器信息部分的代码
+
 let isFirst = true;
 for (const [configKey, serverConfig] of Object.entries(config.servers)) {
     if (serverConfig.serverIP) {
@@ -625,7 +623,7 @@ serverInfo_xml += `
     </StackPanel>
 </local:MyCard>`;
 
-// 使用模板字符串构建XML，使用API返回的数据
+
 const xml = `
 <StackPanel.Resources>
     <SolidColorBrush x:Key="IconBrush" Color="#4A90E2"/>
@@ -695,7 +693,7 @@ ${serverInfo_xml}
 
         return new Response(xml, {
             headers: {
-                'Content-Type': 'text/html; charset=utf-8',  // 添加 charset=utf-8
+                'Content-Type': 'text/html; charset=utf-8',
                 'Cache-Control': 'public, max-age=300',
             },
         });
@@ -703,7 +701,7 @@ ${serverInfo_xml}
         return new Response(`Error: ${error.message}`, {
             status: 500,
             headers: {
-                'Content-Type': 'text/plain; charset=utf-8',  // 添加 charset=utf-8
+                'Content-Type': 'text/plain; charset=utf-8',
             },
         });
     }
@@ -719,7 +717,6 @@ const server = http.createServer(async (req, res) => {
         adminToken = params.has('admin') ? params.get('admin') : '';
         debug && console.log(`传入的管理员令牌: ${adminToken}`);
         
-        // 声明 response 变量
         let response;
         
         // 根据令牌选择返回内容
@@ -731,13 +728,13 @@ const server = http.createServer(async (req, res) => {
 
         res.writeHead(200, {
             ...response.headers,
-            'Content-Type': 'text/html; charset=utf-8'  // 添加 charset=utf-8
+            'Content-Type': 'text/html; charset=utf-8'
         });
         res.end(await response.text());
     } catch (error) {
         debug && console.error('服务器错误:', error);
         res.writeHead(500, { 
-            'Content-Type': 'text/plain; charset=utf-8'  // 添加 charset=utf-8
+            'Content-Type': 'text/plain; charset=utf-8'
         });
         res.end('Internal Server Error');
     }

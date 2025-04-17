@@ -11,7 +11,8 @@ iceLink 冰点链接是为PCL2启动器设计的服务器信息面板系统，�
 
 
 #### 预览图（客户端）
-![客户端预览图](https://github.com/user-attachments/assets/ecc12caf-6653-4139-acba-512a7b8d4a52)
+![客户端预览图](https://github.com/user-attachments/assets/2cab5e6f-6ea3-4027-8d5e-1f8e4a678d9a)
+
 
 
 

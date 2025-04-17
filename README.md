@@ -4,13 +4,15 @@
 ### 项目简介
 iceLink 冰点链接是为PCL2启动器设计的服务器信息面板系统，可快速展示Minecraft服务器状态信息。
 #### 预览图（管理端）
-![管理端预览图](https://github.com/user-attachments/assets/3a0a5b54-226c-4fc1-a3e1-a64531630f9d)
+![管理端预览图](https://github.com/user-attachments/assets/d8025d5d-f5d9-4952-a333-500161a90c86)
+
 
 
 
 
 #### 预览图（客户端）
-![客户端预览图](https://github.com/user-attachments/assets/3a8e278e-3b67-4f58-b8a9-fa41a19bd7a3)
+![客户端预览图](https://github.com/user-attachments/assets/ecc12caf-6653-4139-acba-512a7b8d4a52)
+
 
 
 

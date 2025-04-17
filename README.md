@@ -2,14 +2,19 @@
 
 ***该项目为PCL2的主页***
 ### 项目简介
-iceLink 冰点链接是为PCL2启动器设计的服务器信息面板系统，可快速展示Minecraft服务器状态信息。
+iceLink 冰点链接是为PCL2启动器设计的服务器信息面板系统，可快速展示Minecraft服务器状态信息。让玩家进入游戏前知道服务器是否有玩家，让服主和管理了解到服务器的状态！
 #### 预览图（管理端）
-![管理端预览图](https://github.com/user-attachments/assets/cf517195-3626-4ea0-ae7d-dd87e18ac9c3)
+![管理端预览图](https://github.com/user-attachments/assets/d8025d5d-f5d9-4952-a333-500161a90c86)
+
+
 
 
 
 #### 预览图（客户端）
-![客户端预览图](https://github.com/user-attachments/assets/eebc4d40-95b6-440e-ac65-ef601f3dae4b)
+![客户端预览图](https://github.com/user-attachments/assets/2cab5e6f-6ea3-4027-8d5e-1f8e4a678d9a)
+
+
+
 
 
 
@@ -135,8 +140,10 @@ https://github.com/YuShanNan/ChiLing-HomePage-PCL2
 该项目的mc服务器状态API使用的是 ***https://api.mcsrvstat.us/*** 如果出现主页响应缓慢可能是 api 的锅 qwq
 
 
-![CC BY-NC-SA 4.0](https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png)  
-本作品采用[CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/)授权。
+![GPL-3.0](https://img.shields.io/badge/License-GPLv3-blue.svg)  
+本作品采用[GPL-3.0](https://www.gnu.org/licenses/gpl-3.0)授权。
+
+***该项目协议已修改为 GPL-3.0，原协议 CC-BY-NC-SA-4.0 已弃用***
 
 
 项目作者 icelly_QAQ

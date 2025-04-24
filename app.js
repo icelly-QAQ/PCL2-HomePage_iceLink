@@ -261,7 +261,7 @@ for (const [configKey, serverConfig] of Object.entries(config.servers)) {
                     Text="加入服务器" 
                     Margin="0,0,15,8" 
                     EventType="启动游戏" 
-                    EventData="\\current|${serverConfig.serverIP}" 
+                    EventData="\\current|${serverConfig.serverIP}${serverConfig.serverPORT ? ':' + serverConfig.serverPORT : ''}" 
                     ToolTip="将会以当前版本加入${serverConfig.serverIP}" 
                     Height="35" 
                     Width="80"/>
@@ -269,7 +269,7 @@ for (const [configKey, serverConfig] of Object.entries(config.servers)) {
                     Text="复制地址" 
                     Margin="0,8,15,0" 
                     EventType="复制文本" 
-                    EventData="${serverConfig.serverIP}" 
+                    EventData="${serverConfig.serverIP}${serverConfig.serverPORT ? ':' + serverConfig.serverPORT : ''}" 
                     ToolTip="复制服务器地址" 
                     Height="35" 
                     Width="80"/>
@@ -600,7 +600,7 @@ for (const [configKey, serverConfig] of Object.entries(config.servers)) {
                     Text="加入服务器" 
                     Margin="0,0,15,8" 
                     EventType="启动游戏" 
-                    EventData="\\current|${serverConfig.serverIP}" 
+                    EventData="\\current|${serverConfig.serverIP}${serverConfig.serverPORT ? ':' + serverConfig.serverPORT : ''}" 
                     ToolTip="将会以当前版本加入${serverConfig.serverIP}" 
                     Height="35" 
                     Width="80"/>
@@ -608,7 +608,7 @@ for (const [configKey, serverConfig] of Object.entries(config.servers)) {
                     Text="复制地址" 
                     Margin="0,8,15,0" 
                     EventType="复制文本" 
-                    EventData="${serverConfig.serverIP}" 
+                    EventData="${serverConfig.serverIP}${serverConfig.serverPORT ? ':' + serverConfig.serverPORT : ''}" 
                     ToolTip="复制服务器地址" 
                     Height="35" 
                     Width="80"/>

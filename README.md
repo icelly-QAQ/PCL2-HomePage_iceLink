@@ -143,14 +143,14 @@ http://localhost:3000/?admin=[您设置的管理员令牌]     管理端
 https://github.com/YuShanNan/ChiLing-HomePage-PCL2
 
 
+![](https://cdn.jsdelivr.net/gh/icelly-QAQ/PCL2-HomePage_iceLink/)
+
 ### 声明
 该项目的mc服务器状态API使用的是 ***https://api.mcsrvstat.us/*** 如果出现主页响应缓慢可能是 api 的锅 qwq
 
 
 ![GPL-3.0](https://img.shields.io/badge/License-GPLv3-blue.svg)  
 本作品采用[GPL-3.0](https://www.gnu.org/licenses/gpl-3.0)授权。
-
-***该项目协议已修改为 GPL-3.0，原协议 CC-BY-NC-SA-4.0 已弃用***
 
 
 项目作者 icelly_QAQ

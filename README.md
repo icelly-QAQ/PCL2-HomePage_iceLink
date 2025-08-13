@@ -49,7 +49,7 @@ v1.8 版本！
 1. 在 [releases](https://github.com/icelly-QAQ/PCL2-HomePage_iceLink/releases/) 中下载最新的 app.js 文件
 2. 在 app.js 同目录下的终端运行```node app.js```生成默认配置文件
 3. 修改 config.json 内的配置 （***“注意：下方未提起的配置项请不要随意修改”***）
-**当需要添加更多服务器时复制 serverConfig_1 条目的所有内容到 serverConfig_1 的下方并把 1 改为 2**
+**当需要添加更多服务器时复制 serverConfig_1 条目的所有内容到 serverConfig_1 的下方并把 1 改为 2 （需要更多时以此类推）**
 ```
 {
   "ip": "面板地址",
@@ -62,7 +62,7 @@ v1.8 版本！
       "serverIP": "服务器地址",
       "serverPORT": "服务器端口"
     },
-        "serverConfig_2": {
+      "serverConfig_2": {
       "serverName": "服务器名称",
       "serverIP": "服务器地址",
       "serverPORT": "服务器端口"
